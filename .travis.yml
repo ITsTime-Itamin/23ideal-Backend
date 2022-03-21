@@ -21,8 +21,6 @@ before_deploy:
   - mkdir -p before-deploy
   - cp scripts/*.sh before-deploy/
   - cp scripts/*.yml before-deploy/
-  - cp scripts/itamin-database/db/conf/my.cnf before-deploy/
-  - cp scripts/itamin-database/.env before-deploy/
   - cp Dockerfile before-deploy/
   - cp appspec.yml before-deploy/
   - cp build/libs/*.jar before-deploy/
