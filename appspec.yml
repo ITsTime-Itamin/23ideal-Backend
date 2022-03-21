@@ -1,0 +1,18 @@
+version: 0.0
+os: linux    # EC2 운영체제
+files:
+  - source:  /
+    destination: /home/ec2-user/itamin/zip/  # EC2 내부에 목적지 경로
+    overwrite: yes   # 덮어쓸 것인지?
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+
+hooks:
+  ApplicationStart:
+    - location: deploy.sh # 아래에서 작성한 스크립트 파일 이름
+      timeout: 60
+      runas: ec2-user
