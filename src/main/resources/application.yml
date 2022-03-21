@@ -15,6 +15,7 @@
 #        format_sql: true
 #        #default_batch_fetch_size: 100
 #    #open-in-view: false
+#    database-platform: org.hibernate.dialect.MySQL5Dialect
 #
 #  data:
 #    web:
