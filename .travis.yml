@@ -53,3 +53,4 @@ notifications:
   email:
     recipients:
       - rlawjddn5980@naver.com
+  slack: itstime-itamin:AxRaQdmjQbx86JLxeRo2GDcE
