@@ -1,4 +1,4 @@
-package com.example.itaminbackend.global.redis;
+package com.example.itaminbackend.global.config.redis;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
