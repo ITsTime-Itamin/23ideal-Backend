@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
-@Profile("local")
+@Profile("dev")
 @Service
 public class LocalFileServiceImpl implements FileService {
     private static final String IMAGE_PATH = "./images/";
