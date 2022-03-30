@@ -36,7 +36,7 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       TZ: Asia/Seoul
-      SPRING_PROFILES_ACTIVE: deploy
+      SPRING_PROFILES_ACTIVE: prod
     ports:
       - 8080:8080
     container_name: itamin-server
