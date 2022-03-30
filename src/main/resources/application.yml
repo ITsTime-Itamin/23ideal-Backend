@@ -45,6 +45,10 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
   jpa:
     hibernate:
@@ -53,8 +57,6 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-        #default_batch_fetch_size: 100
-    #open-in-view: false
     database-platform: org.hibernate.dialect.MySQL5Dialect
 
   data:
@@ -62,7 +64,6 @@ spring:
       pageable:
         default-page-size: 10
         max-page_size: 2000
-        #one-indexed-parameters: true
 
   profiles:
     include: oauth
@@ -76,3 +77,15 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
+
+cloud:
+  aws:
+    s3:
+      bucket: itamin-backend-images
+    credentials:
+      access-key: AKIAXUHC6GFVDFVR3GQM
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
