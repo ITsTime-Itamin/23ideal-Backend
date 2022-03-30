@@ -1,0 +1,50 @@
+spring:
+  profiles:
+    active: test
+    include: oauth
+    session:
+      store-type: jdbc
+  datasource:
+    url: jdbc:mysql://localhost:4400/itamin?characterEncoding=utf8&serverTimezone=Asia/Seoul
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page_size: 2000
+
+  redis:
+    host: redis
+    port: 6379
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+
+cloud:
+  aws:
+    s3:
+      bucket: itamin-backend-images
+    credentials:
+      access-key: AKIAXUHC6GFVDFVR3GQM
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

@@ -22,9 +22,8 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
-@Profile("deploy")
+@Profile("prod")
 @Service
-@PropertySource("classpath:application.yml")
 public class AwsS3FileServiceImpl implements FileService {
 
     private final AmazonS3Client amazonS3Client;
