@@ -1,6 +1,5 @@
 spring:
   profiles:
-    active: test
     session:
       store-type: jdbc
   datasource:
