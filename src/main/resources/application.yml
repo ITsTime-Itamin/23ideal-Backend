@@ -37,9 +37,15 @@ spring:
     host: localhost
     port: 6379
 
-logging.level:
-  org.hibernate.SQL: debug
-  org.hibernate.type: trace
+logging:
+  level:
+    org:
+      hibernate.SQL: debug
+      hibernate.type: trace
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
 
 cloud:
   aws:
@@ -85,12 +91,18 @@ spring:
         max-page_size: 2000
 
   redis:
-    host: localhost
+    host: redis
     port: 6379
 
-logging.level:
-  org.hibernate.SQL: debug
-  org.hibernate.type: trace
+logging:
+  level:
+    org:
+      hibernate.SQL: debug
+      hibernate.type: trace
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
 
 cloud:
   aws:
