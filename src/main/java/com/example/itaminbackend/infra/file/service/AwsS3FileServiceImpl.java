@@ -4,13 +4,14 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.DeleteObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.example.itaminbackend.infra.file.constant.ImageExtension;
+import com.example.itaminbackend.infra.file.exception.FileLoadFailedException;
+import com.example.itaminbackend.infra.file.exception.FileSaveFailedException;
+import com.example.itaminbackend.infra.file.util.ImageExtension;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,7 +45,7 @@ public class AwsS3FileServiceImpl implements FileService {
             return new PutObjectRequest(this.bucketName, filename, file.getInputStream(), this.objectMetadata(file));
         } catch (IOException e) {
             log.info(e.getMessage());
-            throw new IllegalArgumentException("파일 저장에 실패했습니다.");
+            throw new FileSaveFailedException();
         }
     }
 
@@ -61,7 +62,7 @@ public class AwsS3FileServiceImpl implements FileService {
             return this.amazonS3Client.getObject(this.bucketName, key).getObjectContent().readAllBytes();
         } catch (IOException e) {
             log.info(e.getMessage());
-            throw new IllegalArgumentException("파일 불러오기에 실패했습니다.");
+            throw new FileLoadFailedException();
         }
     }
 
