@@ -25,7 +25,6 @@ public class MyFileServiceImpl implements MyFileService {
         if(multipartFiles!=null)
         for (MultipartFile multipartFile : multipartFiles)
             myFiles.add(this.myFileRepository.save(this.myFileMapper.toEntity(this.fileService.saveImage(multipartFile))));
-
         return myFiles;
     }
 }

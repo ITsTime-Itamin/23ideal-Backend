@@ -1,7 +1,9 @@
 package com.example.itaminbackend.infra.file.service;
 
 import com.amazonaws.util.IOUtils;
-import com.example.itaminbackend.infra.file.constant.ImageExtension;
+import com.example.itaminbackend.infra.file.constant.FileConstants.ELocalFileServiceImpl;
+import com.example.itaminbackend.infra.file.exception.FileSaveFailedException;
+import com.example.itaminbackend.infra.file.util.ImageExtension;
 import com.example.itaminbackend.infra.file.exception.ImageNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -19,41 +21,37 @@ import java.util.UUID;
 @Profile("dev")
 @Service
 public class LocalFileServiceImpl implements FileService {
-    private static final String IMAGE_PATH = "./images/";
 
     @Override
     public String saveImage(MultipartFile file) {
         try {
             String extension = Objects.requireNonNull(FilenameUtils.getExtension(file.getOriginalFilename()));
             ImageExtension.validateImageExtension(extension);
-            File savedFile = new File(String.format("%s%s.%s", IMAGE_PATH, UUID.randomUUID(), extension));
+            File savedFile = new File(String.format(ELocalFileServiceImpl.eFileStringFormat.getValue(), ELocalFileServiceImpl.eImagePath.getValue(), UUID.randomUUID(), extension));
             savedFile.getParentFile().mkdirs();
             file.transferTo(savedFile.toPath());
             return savedFile.getName();
         } catch (IOException e) {
             log.error(e.getMessage());
-            throw new IllegalArgumentException("파일 저장에 실패했습니다.");
+            throw new FileSaveFailedException();
         }
     }
 
     @Override
     public byte[] getImage(String key) {
-        try (final BufferedInputStream bis = new BufferedInputStream(new FileInputStream(IMAGE_PATH + key))) {
-            return IOUtils.toByteArray(bis);
-        } catch (FileNotFoundException e) {
-            throw new ImageNotFoundException();
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
+        try (final BufferedInputStream bis = new BufferedInputStream(new FileInputStream(ELocalFileServiceImpl.eImagePath.getValue() + key))) {
+            return IOUtils.toByteArray(bis);}
+        catch (FileNotFoundException e) {throw new ImageNotFoundException();}
+        catch (IOException e) {throw new IllegalArgumentException(e.getMessage());}
     }
 
     @Override
     public void delete(String key) {
-        FileUtils.deleteQuietly(new File(IMAGE_PATH + key));
+        FileUtils.deleteQuietly(new File(ELocalFileServiceImpl.eImagePath.getValue() + key));
     }
 
     @Override
     public void deleteAll(List<String> keys) {
-        keys.forEach(key -> FileUtils.deleteQuietly(new File(IMAGE_PATH + key)));
+        keys.forEach(key -> FileUtils.deleteQuietly(new File(ELocalFileServiceImpl.eImagePath.getValue() + key)));
     }
 }
