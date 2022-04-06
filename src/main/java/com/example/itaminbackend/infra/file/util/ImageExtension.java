@@ -1,4 +1,4 @@
-package com.example.itaminbackend.infra.file.constant;
+package com.example.itaminbackend.infra.file.util;
 
 import com.example.itaminbackend.infra.file.exception.FileExtensionException;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public enum ImageExtension {
         try {
             ImageExtension.valueOf(extension.toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
-            throw new FileExtensionException("이미지 파일이 아닙니다.");
+            throw new FileExtensionException();
         }
     }
 }
