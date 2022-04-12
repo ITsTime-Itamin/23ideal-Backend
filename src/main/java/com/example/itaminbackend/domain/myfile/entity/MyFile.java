@@ -23,4 +23,12 @@ public class MyFile extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
+
+    private boolean isDeleted;
+
+    public static MyFile from(String key) {
+        return MyFile.builder()
+                .fileKey(key)
+                .build();
+    }
 }
