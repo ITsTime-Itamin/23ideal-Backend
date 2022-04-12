@@ -8,4 +8,7 @@ import java.util.List;
 public interface MyFileService{
 
     List<MyFile> saveImages(List<MultipartFile> multipartFiles);
+    MyFile saveImage(MultipartFile multipartFiles);
+    MyFile getFile(Long fileId);
+    boolean deleteFile(Long fileId);
 }
