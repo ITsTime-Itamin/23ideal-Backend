@@ -25,13 +25,17 @@ jobs:
       run: ./gradlew build
       shell: bash
       
-    - name: mkdir
+    - name: mkdir -p before-deploy
       run: mkdir -p before-deploy
-    - name: cp Dockerfile
-      run: cp Dockerfile before-deploy/
-    - name: cp appspec.yml
-      run: cp Dockerfile before-deploy/
-    - name: cp build/libs/*.jar
+    - name: cp scripts/*.sh before-deploy/
+      run: cp scripts/*.sh before-deploy/
+    - name: cp scripts/*.yml before-deploy/
+      run: cp scripts/*.yml before-deploy/
+    - name: cp Dockerfile before-deploy/
+      run: cp Dockerfile before-deploy/ 
+    - name: cp appspec.yml before-deploy/
+      run: cp appspec.yml before-deploy/
+    - name: cp build/libs/*.jar before-deploy/
       run: cp build/libs/*.jar before-deploy/
     - name: cd before-deploy && zip -r before-deploy *
       run: cd before-deploy && zip -r before-deploy *
