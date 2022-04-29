@@ -40,12 +40,18 @@ jobs:
     - name: cd before-deploy && zip -r before-deploy *
       run: cd before-deploy && zip -r before-deploy *
       
+    - name: cd before-deploy
+      run: cd before-deploy
+    - name: ls -al
+      run: ls -al
+    - name: cd ..
+      run: cd ..
     - name: pwd 
       run: pwd
     - name: ls -al 
       run: ls -al
-    - name: cd .. && mkdir -p deploy
-      run: cd .. && mkdir -p deploy
+    - name: mkdir -p deploy
+      run: mkdir -p deploy
     - name: pwd 
       run: pwd
     - name: ls -al 
