@@ -18,7 +18,8 @@ public class BoardConstants {
     @Getter
     @RequiredArgsConstructor
     public enum EBoardResponseMessage{
-        eCreateSuccess("게시판을 작성했습니다.");
+        eCreateSuccess("게시판을 작성했습니다."),
+        eUpdateSuccess("게시판을 수정했습니다.");
         private final String message;
     }
 

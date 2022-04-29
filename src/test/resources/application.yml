@@ -20,6 +20,9 @@ spring:
         show_sql: true
         format_sql: true
     database-platform: org.hibernate.dialect.MySQL5Dialect
+  batch:
+    jdbc:
+      initialize-schema: always
 
   data:
     web:
