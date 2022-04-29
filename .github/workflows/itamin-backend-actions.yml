@@ -1,0 +1,58 @@
+name: itamin-backend-actions
+
+on:
+  push:
+    branches: [ master ]
+    
+env:
+  S3_BUCKET_NAME: itamin-backend-build
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      
+    - name: Build with Gradle
+      run: ./gradlew build
+      shell: bash
+      
+    - name: mkdir
+      run: mkdir -p before-deploy
+    - name: cp Dockerfile
+      run: cp Dockerfile before-deploy/
+    - name: cp appspec.yml
+      run: cp Dockerfile before-deploy/
+    - name: cp build/libs/*.jar
+      run: cp build/libs/*.jar before-deploy/
+    - name: cd before-deploy && zip -r before-deploy *
+      run: cd before-deploy && zip -r before-deploy *
+    - name: cd ../ && mkdir -p deploy
+      run: cd ../ && mkdir -p deploy
+    - name: mv before-deploy/before-deploy.zip deploy/itamin_CI-CD.zip
+      run: mv before-deploy/before-deploy.zip deploy/itamin_CI-CD.zip
+      
+    - name: Configure AWS credentials #2
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.ACCESS_KEY_SECRET }}
+        aws-region: ap-northeast-2
+        
+    - name: Upload to S3 #3
+      run: aws s3 cp --region ap-northeast-2 deploy/itamin_CI-CD.zip s3://itamin-backend-build/itamin_CI-CD.zip
+
+    - name: Code Deploy #4
+      run: aws deploy create-deployment --application-name itamin-backend
+        --deployment-config-name CodeDeployDefault.OneAtATime
+        --deployment-group-name itamin-backend-group
+        --s3-location bucket=itamin-backend-build,bundleType=zip,key=itamin_CI-CD.zip
+      
