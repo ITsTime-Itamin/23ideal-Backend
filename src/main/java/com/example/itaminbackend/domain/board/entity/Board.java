@@ -1,6 +1,7 @@
 package com.example.itaminbackend.domain.board.entity;
 
 import com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardType;
+import com.example.itaminbackend.domain.board.dto.BoardDto.UpdateRequest;
 import com.example.itaminbackend.domain.myfile.entity.MyFile;
 import com.example.itaminbackend.global.entity.BaseTimeEntity;
 import lombok.*;
@@ -44,4 +45,5 @@ public class Board extends BaseTimeEntity {
         for (MyFile myFile : myFiles) {
             myFile.setBoard(this);}
     }
+
 }
