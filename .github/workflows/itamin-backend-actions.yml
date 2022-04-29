@@ -39,8 +39,18 @@ jobs:
       run: cp build/libs/*.jar before-deploy/
     - name: cd before-deploy && zip -r before-deploy *
       run: cd before-deploy && zip -r before-deploy *
-    - name: cd ../ && mkdir -p deploy
-      run: cd ../ && mkdir -p deploy
+      
+    - name: pwd 
+      run: pwd
+    - name: ls -al 
+      run: ls -al
+    - name: cd .. && mkdir -p deploy
+      run: cd .. && mkdir -p deploy
+    - name: pwd 
+      run: pwd
+    - name: ls -al 
+      run: ls -al
+      
     - name: mv before-deploy/before-deploy.zip deploy/itamin_CI-CD.zip
       run: mv before-deploy/before-deploy.zip deploy/itamin_CI-CD.zip
       
