@@ -1,7 +1,7 @@
 package com.example.itaminbackend.global.batch.chunk;
 
-import com.example.itaminbackend.global.batch.domain.PublicRentalHouse;
-import com.example.itaminbackend.global.batch.service.PublicRentalHouseService;
+import com.example.itaminbackend.domain.rentalhouse.entity.PublicRentalHouse;
+import com.example.itaminbackend.domain.rentalhouse.service.PublicRentalHouseService;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 
