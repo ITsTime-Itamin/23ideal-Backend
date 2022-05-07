@@ -1,7 +1,7 @@
 package com.example.itaminbackend.global.batch.dto;
 
 
-import com.example.itaminbackend.global.batch.domain.PublicRentalHouse;
+import com.example.itaminbackend.domain.rentalhouse.entity.PublicRentalHouse;
 import org.modelmapper.Converter;
 import org.modelmapper.PropertyMap;
 
