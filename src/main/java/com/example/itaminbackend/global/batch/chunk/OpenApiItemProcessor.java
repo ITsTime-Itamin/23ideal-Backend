@@ -1,6 +1,6 @@
 package com.example.itaminbackend.global.batch.chunk;
 
-import com.example.itaminbackend.global.batch.domain.PublicRentalHouse;
+import com.example.itaminbackend.domain.rentalhouse.entity.PublicRentalHouse;
 import com.example.itaminbackend.global.batch.dto.PublicRentalHouseMap;
 import com.example.itaminbackend.global.batch.dto.PublicRentalHouseResponse;
 import lombok.RequiredArgsConstructor;

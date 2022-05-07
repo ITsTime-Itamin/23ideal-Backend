@@ -1,4 +1,4 @@
-package com.example.itaminbackend.global.batch.domain;
+package com.example.itaminbackend.domain.rentalhouse.entity;
 
 import lombok.*;
 
