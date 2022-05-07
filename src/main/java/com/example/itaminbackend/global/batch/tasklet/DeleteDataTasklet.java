@@ -1,6 +1,6 @@
 package com.example.itaminbackend.global.batch.tasklet;
 
-import com.example.itaminbackend.global.batch.service.PublicRentalHouseService;
+import com.example.itaminbackend.domain.rentalhouse.service.PublicRentalHouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;

@@ -1,6 +1,5 @@
 package com.example.itaminbackend.global.batch.chunk;
 
-import com.example.itaminbackend.global.batch.constant.PublicRentalHouseConstants.ESignguCode;
 import com.example.itaminbackend.global.batch.dto.PublicRentalHouseResponse;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +11,7 @@ import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.beans.factory.annotation.Value;
+import com.example.itaminbackend.domain.rentalhouse.constant.PublicRentalHouseConstants.ESignguCode;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -80,7 +80,6 @@ public class OpenApiItemReader implements ItemReader<List<PublicRentalHouseRespo
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             publicRentalHouseResponseList.add(objectMapper.readValue(list.toString(), PublicRentalHouseResponse.class));
         }
-        System.out.println("출력해보기"+ publicRentalHouseResponseList);
         rd.close();
         conn.disconnect();
         return publicRentalHouseResponseList;
