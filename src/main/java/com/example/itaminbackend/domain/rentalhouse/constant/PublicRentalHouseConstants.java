@@ -1,7 +1,8 @@
-package com.example.itaminbackend.global.batch.constant;
+package com.example.itaminbackend.domain.rentalhouse.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 public class PublicRentalHouseConstants {
 
@@ -35,5 +36,12 @@ public class PublicRentalHouseConstants {
         GANGDONG_GU("740");
 
         private final String code;
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    public enum EPublicRentalHouseResponseMessage{
+        eGetPublicRentalHouseSuccess("서울 모든 구의 공공임대주택 개수를 가져왔습니다.");
+        private final String message;
     }
 }
