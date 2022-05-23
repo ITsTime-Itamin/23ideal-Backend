@@ -21,7 +21,7 @@ spring:
       max-request-size: 10MB
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
@@ -37,8 +37,7 @@ spring:
   redis:
     host: localhost
     port: 6379
-  batch:
-    initialize-schema: always
+
 
 logging:
   level:
@@ -108,8 +107,6 @@ spring:
   redis:
     host: redis
     port: 6379
-  batch:
-    initialize-schema: always
 
 logging:
   level:

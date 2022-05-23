@@ -2,6 +2,7 @@ package com.example.itaminbackend.domain.board.dto;
 
 import com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardType;
 import com.example.itaminbackend.domain.board.entity.Board;
+import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.global.util.Enum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,7 +32,7 @@ public abstract class BoardDto {
         @NotBlank(message = "게시판 유형을 입력해 주세요.")
         @ApiModelProperty(notes = "게시판 유형을 입력해 주세요.")
         @Enum(enumClass = EBoardType.class)
-        private EBoardType boardType;
+        private String boardType;
 
         private List<MultipartFile> files;
     }
@@ -75,12 +76,6 @@ public abstract class BoardDto {
     @ApiModel(description = "게시판 수정을 위한 응답 객체")
     public static class UpdateResponse {
         private final Long boardId;
-
-        public static UpdateResponse from(Board board) {
-            return UpdateResponse.builder()
-                    .boardId(board.getBoardId())
-                    .build();
-        }
     }
 
 
