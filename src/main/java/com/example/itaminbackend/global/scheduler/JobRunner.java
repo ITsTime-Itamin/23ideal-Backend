@@ -31,7 +31,6 @@ public abstract class JobRunner implements ApplicationRunner {
     public JobDetail buildJobDetail(Class job, String name, String group, Map params) {
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.putAll(params);
-
         return newJob(job).withIdentity(name, group)
                 .usingJobData(jobDataMap)
                 .build();
