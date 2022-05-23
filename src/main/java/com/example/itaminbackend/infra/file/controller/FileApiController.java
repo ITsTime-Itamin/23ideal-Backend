@@ -18,13 +18,13 @@ public class FileApiController {
     @ApiOperation(value = "Amazon S3에 이미지 업로드 TEST", notes = "Amazon S3에 이미지 업로드 ")
     @PostMapping("/image")
     public ResponseEntity<String> uploadImage(@ApiParam(value="img 파일들(여러 파일 업로드 가능)", required = true) @RequestPart MultipartFile multipartFile) {
-        return ResponseEntity.ok(fileService.saveImage(multipartFile));
+        return ResponseEntity.ok(fileService.saveFile(multipartFile));
     }
 
     @ApiOperation(value = "Amazon S3에 업로드 된 파일을 삭제 TEST", notes = "Amazon S3에 업로드된 이미지 삭제")
     @DeleteMapping("/image")
     public ResponseEntity<Void> deleteImage(@ApiParam(value="img 파일 하나 삭제", required = true) @RequestParam String fileName) {
-        fileService.delete(fileName);
+        fileService.deleteFile(fileName);
         return ResponseEntity.noContent().build();
     }
 }
