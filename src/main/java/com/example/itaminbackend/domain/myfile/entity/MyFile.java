@@ -26,6 +26,11 @@ public class MyFile extends BaseTimeEntity {
 
     private boolean isDeleted;
 
+    public MyFile(String fileName) {
+        this.fileKey = fileName;
+    }
+
+
     public static MyFile from(String key) {
         return MyFile.builder()
                 .fileKey(key)

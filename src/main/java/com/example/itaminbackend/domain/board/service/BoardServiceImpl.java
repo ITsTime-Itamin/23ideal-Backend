@@ -24,7 +24,6 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public CreateResponse createBoard(CreateRequest createRequest) {
         Board board = this.boardMapper.toEntity(createRequest);
-        System.out.println("boardFileSize"+board.getMyFiles().size());
         return this.boardMapper.toCreateResponse(this.boardRepository.save(board));
     }
 

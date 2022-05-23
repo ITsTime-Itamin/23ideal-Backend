@@ -31,7 +31,7 @@ public abstract class BoardDto {
         @NotBlank(message = "게시판 유형을 입력해 주세요.")
         @ApiModelProperty(notes = "게시판 유형을 입력해 주세요.")
         @Enum(enumClass = EBoardType.class)
-        private String boardType;
+        private EBoardType boardType;
 
         private List<MultipartFile> files;
     }
