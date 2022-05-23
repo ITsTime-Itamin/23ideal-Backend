@@ -1,6 +1,12 @@
 package com.example.itaminbackend.infra.file.exception;
 
-public class FileSaveFailedException extends IllegalArgumentException {
-    private static final String MESSAGE = "파일 저장에 실패했습니다.";
-    public FileSaveFailedException() {super(MESSAGE);}
+import static com.example.itaminbackend.infra.file.constant.FileConstants.FileExceptionList.FILE_SAVE_FAILED;
+
+public class FileSaveFailedException extends FileException {
+    public FileSaveFailedException() {
+        super(FILE_SAVE_FAILED.getErrorCode(),
+                FILE_SAVE_FAILED.getHttpStatus(),
+                FILE_SAVE_FAILED.getMessage()
+        );
+    }
 }
