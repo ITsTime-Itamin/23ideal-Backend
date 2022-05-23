@@ -1,4 +1,4 @@
-package com.example.itaminbackend.domain.myfile.entity;
+package com.example.itaminbackend.domain.image.entity;
 
 import com.example.itaminbackend.domain.board.entity.Board;
 import com.example.itaminbackend.global.entity.BaseTimeEntity;
@@ -12,13 +12,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MyFile extends BaseTimeEntity {
+public class Image extends BaseTimeEntity {
 
     @Setter(value = AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long myFileId;
-    private String fileKey;
+    private Long imageId;
+    private String imageKey;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
@@ -26,14 +26,13 @@ public class MyFile extends BaseTimeEntity {
 
     private boolean isDeleted;
 
-    public MyFile(String fileName) {
-        this.fileKey = fileName;
+    public Image(String imageKey) {
+        this.imageKey = imageKey;
     }
 
-
-    public static MyFile from(String key) {
-        return MyFile.builder()
-                .fileKey(key)
+    public static Image from(String key) {
+        return Image.builder()
+                .imageKey(key)
                 .build();
     }
 }
