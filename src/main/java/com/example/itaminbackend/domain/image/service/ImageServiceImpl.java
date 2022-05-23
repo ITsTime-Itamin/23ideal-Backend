@@ -23,11 +23,11 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public List<Image> saveImages(List<MultipartFile> multipartFiles) {
-        List<Image> myFiles = new ArrayList<>();
+        List<Image> images = new ArrayList<>();
         if(multipartFiles!=null)
         for (MultipartFile multipartFile : multipartFiles)
-            myFiles.add(this.myFileRepository.save(this.myFileMapper.toEntity(this.fileService.saveFile(multipartFile))));
-        return myFiles;
+            images.add(this.myFileRepository.save(this.myFileMapper.toEntity(this.fileService.saveFile(multipartFile))));
+        return images;
     }
 
     @Override
@@ -36,20 +36,19 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image getImage(Long fileId) {
-        return this.myFileRepository.findNotDeletedByImageId(fileId).orElseThrow(NotFoundImageException::new);
+    public Image getImage(Long imageId) {
+        return this.myFileRepository.findNotDeletedByImageId(imageId).orElseThrow(NotFoundImageException::new);
     }
 
     @Override
     @Transactional
-    public boolean deleteImage(Long fileId) {
-        Image image = this.findByImageId(fileId);
+    public boolean deleteImage(Long imageId) {
+        Image image = this.findByImageId(imageId);
         image.setDeleted(true);
-        this.fileService.deleteFile(image.getImageKey());
         return true;
     }
 
-    private Image findByImageId(Long fileId) {
-        return this.myFileRepository.findById(fileId).orElseThrow(NotFoundImageException::new);
+    private Image findByImageId(Long imageId) {
+        return this.myFileRepository.findById(imageId).orElseThrow(NotFoundImageException::new);
     }
 }
