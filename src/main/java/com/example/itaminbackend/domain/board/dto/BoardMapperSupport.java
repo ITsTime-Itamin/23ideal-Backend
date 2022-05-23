@@ -1,7 +1,7 @@
 package com.example.itaminbackend.domain.board.dto;
 
-import com.example.itaminbackend.domain.myfile.entity.MyFile;
-import com.example.itaminbackend.domain.myfile.service.MyFileService;
+import com.example.itaminbackend.domain.image.entity.Image;
+import com.example.itaminbackend.domain.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
@@ -13,10 +13,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Component
 public class BoardMapperSupport {
-    private final MyFileService myFileService;
+    private final ImageService imageService;
 
     @Named("saveImages")
-    public List<MyFile> saveImages(List<MultipartFile> files) throws IOException {
-        return this.myFileService.saveImages(files);
+    public List<Image> saveImages(List<MultipartFile> files) throws IOException {
+        return this.imageService.saveImages(files);
     }
 }

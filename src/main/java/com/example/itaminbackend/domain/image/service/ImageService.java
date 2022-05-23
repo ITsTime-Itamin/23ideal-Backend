@@ -9,6 +9,6 @@ public interface ImageService {
 
     List<Image> saveImages(List<MultipartFile> multipartFiles);
     Image saveImage(MultipartFile multipartFiles);
-    Image getImage(Long fileId);
-    boolean deleteImage(Long fileId);
+    Image getImage(Long imageId);
+    boolean deleteImage(Long imageId);
 }
