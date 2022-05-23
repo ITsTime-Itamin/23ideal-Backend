@@ -1,6 +1,12 @@
 package com.example.itaminbackend.infra.file.exception;
 
-public class FileLoadFailedException extends IllegalArgumentException {
-    private static final String MESSAGE = "파일 불러오기에 실패했습니다.";
-    public FileLoadFailedException() {super(MESSAGE);}
+import static com.example.itaminbackend.infra.file.constant.FileConstants.FileExceptionList.FILE_LOAD_FAILED;
+
+public class FileLoadFailedException extends FileException {
+    public FileLoadFailedException() {
+        super(FILE_LOAD_FAILED.getErrorCode(),
+                FILE_LOAD_FAILED.getHttpStatus(),
+                FILE_LOAD_FAILED.getMessage()
+        );
+    }
 }
