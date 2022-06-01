@@ -70,6 +70,11 @@ open:
         servicekey: ENC(uHyS+htHTxPpg2MxEoDEk2m1WaEgkDj7xjPS8AwwDwLcH4dwMU73id2/gCR+wkYmYD1AjXMR2w8NBaVbOoHI/r42vvAKUeqPsbnawo7+zBPBmM/x0vjCWtbLCUIyNku/5FyyH/P9bpQ=)
       publicRentalHouse:
         url: https://data.myhome.go.kr/rentalHouseList
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+
 ---
 
 spring:
@@ -138,3 +143,7 @@ open:
         servicekey: ENC(uHyS+htHTxPpg2MxEoDEk2m1WaEgkDj7xjPS8AwwDwLcH4dwMU73id2/gCR+wkYmYD1AjXMR2w8NBaVbOoHI/r42vvAKUeqPsbnawo7+zBPBmM/x0vjCWtbLCUIyNku/5FyyH/P9bpQ=)
       publicRentalHouse:
         url: https://data.myhome.go.kr/rentalHouseList
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
