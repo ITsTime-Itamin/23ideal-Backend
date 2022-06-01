@@ -43,6 +43,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-quartz'
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
 }
 
 tasks.named('test') {

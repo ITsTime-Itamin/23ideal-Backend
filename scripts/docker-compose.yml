@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  db:
+    image: mysql
+    ports:
+      - 4400:4400
+    command: --lower_case_table_names=1
+    volumes:
+      - ./itamin-database/db/conf:/etc/mysql/conf.d
+      - ./itamin-database/db/data:/var/lib/mysql
+      - ./itamin-database/db/initdb:/docker-entrypoint-initdb.d
+    env_file: ./itamin-database/.env
+    environment:
+      TZ: Asia/Seoul
+    container_name: itamin-database
+    networks:
+      - itamin-network
+    restart: always
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    networks:
+      - itamin-network
+    restart: always
+    container_name: itamin-redis
+    environment:
+      TZ: Asia/Seoul
+
+  application:
+    image: itamin-backend
+    environment:
+      JAVA_OPTS: -Djasypt.encryptor.password=SPRING_JASYPT_PASSWORD
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:4400/itamin?useUnicode=true&characterEncoding=utf8
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      TZ: Asia/Seoul
+      SPRING_PROFILES_ACTIVE: prod
+    ports:
+      - 80:80
+    container_name: itamin-server
+    networks:
+      - itamin-network
+    depends_on:
+      - db
+      - redis
+
+networks:
+  itamin-network:

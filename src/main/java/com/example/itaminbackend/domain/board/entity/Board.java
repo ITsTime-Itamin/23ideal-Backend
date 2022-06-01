@@ -1,8 +1,7 @@
 package com.example.itaminbackend.domain.board.entity;
 
 import com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardType;
-import com.example.itaminbackend.domain.board.dto.BoardDto.UpdateRequest;
-import com.example.itaminbackend.domain.myfile.entity.MyFile;
+import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.global.entity.BaseTimeEntity;
 import lombok.*;
 
@@ -18,7 +17,6 @@ import java.util.List;
 @Builder
 public class Board extends BaseTimeEntity {
 
-    @Setter(value = AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long boardId;
@@ -28,8 +26,8 @@ public class Board extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private EBoardType boardType;
 
-    @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = CascadeType.PERSIST)
-    private List<MyFile> myFiles = new ArrayList<>();
+    @OneToMany(mappedBy = "board")
+    private List<Image> images = new ArrayList<>();
 
     @Builder
     public Board(String title, String content){
@@ -40,10 +38,10 @@ public class Board extends BaseTimeEntity {
     /**
      * 연관관계 매핑
      */
-    public void setMyFiles(List<MyFile> myFiles) {
-        this.myFiles = myFiles;
-        for (MyFile myFile : myFiles) {
-            myFile.setBoard(this);}
+    public void setImages(List<Image> images) {
+        this.images = images;
+        for (Image image : images) {
+            image.setBoard(this);}
     }
 
 }

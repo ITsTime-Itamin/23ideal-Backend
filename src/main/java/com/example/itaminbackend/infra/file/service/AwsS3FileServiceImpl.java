@@ -33,7 +33,7 @@ public class AwsS3FileServiceImpl implements FileService {
     private String bucketName;
 
     @Override
-    public String saveImage(MultipartFile file) {
+    public String saveFile(MultipartFile file) {
         ImageExtension.validateImageExtension(FilenameUtils.getExtension(file.getOriginalFilename()));
         final String key = UUID.randomUUID().toString();
         this.amazonS3Client.putObject(this.putObjectRequest(file, key));
@@ -57,7 +57,7 @@ public class AwsS3FileServiceImpl implements FileService {
     }
 
     @Override
-    public byte[] getImage(String key) {
+    public byte[] getFile(String key) {
         try {
             return this.amazonS3Client.getObject(this.bucketName, key).getObjectContent().readAllBytes();
         } catch (IOException e) {
@@ -67,7 +67,7 @@ public class AwsS3FileServiceImpl implements FileService {
     }
 
     @Override
-    public void delete(String key) {
+    public void deleteFile(String key) {
         this.amazonS3Client.deleteObject(this.bucketName, key);
     }
 

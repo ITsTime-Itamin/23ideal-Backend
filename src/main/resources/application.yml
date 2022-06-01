@@ -1,0 +1,149 @@
+spring:
+  profiles:
+    active: prod
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  session:
+    store-type: jdbc
+  datasource:
+    url: ENC(VJAdbgW1TLZzMDKOOSqe8/5b0Kf9blSxNY1eh5S2KQM8hrlS2S4Ow21nWIEThYkKlQNidbeHoRGrKyY7Gj3BVt3hBi2FQUm/YJAoB/b+U5T6zA+4sL5shGLCX/ei4YHe)
+    username: ENC(fpnzm6OeJF3hBCULOgeh0w==)
+    password: ENC(fpnzm6OeJF3hBCULOgeh0w==)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page_size: 2000
+
+  redis:
+    host: localhost
+    port: 6379
+
+
+logging:
+  level:
+    org:
+      hibernate.SQL: debug
+      hibernate.type: trace
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
+
+cloud:
+  aws:
+    s3:
+      bucket: itamin-backend-images
+    credentials:
+      instanceProfile: true
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+server:
+  port: 8080
+
+open:
+  api:
+    public:
+      data:
+        servicekey: ENC(uHyS+htHTxPpg2MxEoDEk2m1WaEgkDj7xjPS8AwwDwLcH4dwMU73id2/gCR+wkYmYD1AjXMR2w8NBaVbOoHI/r42vvAKUeqPsbnawo7+zBPBmM/x0vjCWtbLCUIyNku/5FyyH/P9bpQ=)
+      publicRentalHouse:
+        url: https://data.myhome.go.kr/rentalHouseList
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  session:
+    store-type: jdbc
+  datasource:
+    url: ENC(VJAdbgW1TLZzMDKOOSqe8/5b0Kf9blSxNY1eh5S2KQM8hrlS2S4Ow21nWIEThYkKlQNidbeHoRGrKyY7Gj3BVt3hBi2FQUm/YJAoB/b+U5T6zA+4sL5shGLCX/ei4YHe)
+    username: ENC(fpnzm6OeJF3hBCULOgeh0w==)
+    password: ENC(fpnzm6OeJF3hBCULOgeh0w==)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page_size: 2000
+
+  redis:
+    host: redis
+    port: 6379
+
+logging:
+  level:
+    org:
+      hibernate.SQL: debug
+      hibernate.type: trace
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
+
+cloud:
+  aws:
+    s3:
+      bucket: itamin-backend-images
+    credentials:
+      instanceProfile: true
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+server:
+  port: 80
+
+open:
+  api:
+    public:
+      data:
+        servicekey: ENC(uHyS+htHTxPpg2MxEoDEk2m1WaEgkDj7xjPS8AwwDwLcH4dwMU73id2/gCR+wkYmYD1AjXMR2w8NBaVbOoHI/r42vvAKUeqPsbnawo7+zBPBmM/x0vjCWtbLCUIyNku/5FyyH/P9bpQ=)
+      publicRentalHouse:
+        url: https://data.myhome.go.kr/rentalHouseList
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor

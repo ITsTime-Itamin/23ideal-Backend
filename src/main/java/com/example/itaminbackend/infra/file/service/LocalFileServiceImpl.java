@@ -4,7 +4,7 @@ import com.amazonaws.util.IOUtils;
 import com.example.itaminbackend.infra.file.constant.FileConstants.ELocalFileServiceImpl;
 import com.example.itaminbackend.infra.file.exception.FileSaveFailedException;
 import com.example.itaminbackend.infra.file.util.ImageExtension;
-import com.example.itaminbackend.infra.file.exception.ImageNotFoundException;
+import com.example.itaminbackend.infra.file.exception.NotFoundFileException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -23,7 +23,7 @@ import java.util.UUID;
 public class LocalFileServiceImpl implements FileService {
 
     @Override
-    public String saveImage(MultipartFile file) {
+    public String saveFile(MultipartFile file) {
         try {
             String extension = Objects.requireNonNull(FilenameUtils.getExtension(file.getOriginalFilename()));
             ImageExtension.validateImageExtension(extension);
@@ -38,15 +38,15 @@ public class LocalFileServiceImpl implements FileService {
     }
 
     @Override
-    public byte[] getImage(String key) {
+    public byte[] getFile(String key) {
         try (final BufferedInputStream bis = new BufferedInputStream(new FileInputStream(ELocalFileServiceImpl.eImagePath.getValue() + key))) {
             return IOUtils.toByteArray(bis);}
-        catch (FileNotFoundException e) {throw new ImageNotFoundException();}
+        catch (FileNotFoundException e) {throw new NotFoundFileException();}
         catch (IOException e) {throw new IllegalArgumentException(e.getMessage());}
     }
 
     @Override
-    public void delete(String key) {
+    public void deleteFile(String key) {
         FileUtils.deleteQuietly(new File(ELocalFileServiceImpl.eImagePath.getValue() + key));
     }
 
