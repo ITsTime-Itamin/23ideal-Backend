@@ -29,8 +29,6 @@ jobs:
       run: mkdir -p before-deploy
     - name: cp scripts/*.sh before-deploy/
       run: cp scripts/*.sh before-deploy/
-    - name: cp scripts/*.yml before-deploy/
-      run: cp scripts/*.yml before-deploy/
     - name: cp Dockerfile before-deploy/
       run: cp Dockerfile before-deploy/ 
     - name: cp appspec.yml before-deploy/
