@@ -80,7 +80,7 @@ class BoardServiceImplTest extends BaseTest {
                 .content("testContent")
                 .images(extractImageFrom(updateRequest))
                 .build();
-        given(this.boardRepository.findById(anyLong())).willReturn(Optional.of(board));
+        given(this.boardRepository.findNotDeletedByBoardId(anyLong())).willReturn(Optional.of(board));
         given(this.imageService.saveImages(updateRequest.getFiles())).willReturn(extractImageFrom(updateRequest));
 
         UpdateResponse response = UpdateResponse.builder()
@@ -93,7 +93,7 @@ class BoardServiceImplTest extends BaseTest {
         assertThat(updateResponse)
                 .usingRecursiveComparison()
                 .isEqualTo(response);
-        then(this.boardRepository).should().findById(anyLong());
+        then(this.boardRepository).should().findNotDeletedByBoardId(anyLong());
         then(this.imageService).should(times(2)).deleteImage(any());
         then(this.imageService).should().saveImages(updateRequest.getFiles());
     }
@@ -102,7 +102,7 @@ class BoardServiceImplTest extends BaseTest {
     @Test
     void validateBoardIdTest(){
         //given
-        given(this.boardRepository.findById(any())).willReturn(Optional.empty());
+        given(this.boardRepository.findNotDeletedByBoardId(any())).willReturn(Optional.empty());
 
         //when, then
         assertThatThrownBy(() -> this.boardService.validateBoardId(anyLong()))
