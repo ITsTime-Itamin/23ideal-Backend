@@ -4,6 +4,7 @@ import com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardType
 import com.example.itaminbackend.domain.board.entity.Board;
 import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.global.util.Enum;
+import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -91,6 +92,26 @@ public abstract class BoardDto {
         private String boardType;
         private LocalDateTime createdDate;
         private List<String> imageKeys;
+    }
+
+    @Getter
+    @Builder
+    @ApiModel(description = "게시판 전체 조회를 위한 응답 객체")
+    public static class GetAllResponse {
+        private Long boardId;
+        private String title;
+        private String content;
+        private LocalDateTime createdDate;
+        private String imageKey;
+
+        @QueryProjection
+        public GetAllResponse(Long boardId, String title, String content, LocalDateTime createdDate, String imageKey) {
+            this.boardId = boardId;
+            this.title = title;
+            this.content = content;
+            this.createdDate = createdDate;
+            this.imageKey = imageKey;
+        }
     }
 
 

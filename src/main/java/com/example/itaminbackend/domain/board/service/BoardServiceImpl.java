@@ -13,11 +13,15 @@ import com.example.itaminbackend.domain.board.exception.NotFoundBoardException;
 import com.example.itaminbackend.domain.board.repository.BoardRepository;
 import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.domain.image.service.ImageService;
+import com.example.itaminbackend.global.dto.PaginationDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.itaminbackend.domain.board.dto.BoardDto.*;
 
@@ -64,6 +68,13 @@ public class BoardServiceImpl implements BoardService{
     public void deleteBoard(Long boardId) {
         Board board = this.validateBoardId(boardId);
         board.setDeleted(true);
+    }
+
+    @Override
+    public PaginationDto<List<GetAllResponse>> getAllDetailBoards(Pageable pageable) {
+        Page<GetAllResponse> page = this.boardRepository.findAllDetailBoardsByCreatedDate(pageable);
+        List<GetAllResponse> data = page.get().collect(Collectors.toList());
+        return PaginationDto.of(page, data);
     }
 
     /**

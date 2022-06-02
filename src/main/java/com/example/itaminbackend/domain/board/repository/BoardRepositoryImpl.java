@@ -1,13 +1,21 @@
 package com.example.itaminbackend.domain.board.repository;
 
+import com.example.itaminbackend.domain.board.dto.QBoardDto_GetAllResponse;
 import com.example.itaminbackend.domain.board.entity.Board;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 
+import static com.example.itaminbackend.domain.board.dto.BoardDto.GetAllResponse;
 import static com.example.itaminbackend.domain.board.entity.QBoard.board;
+import static com.example.itaminbackend.domain.image.entity.QImage.image;
 
 public class BoardRepositoryImpl implements BoardRepositoryCustom{
 
@@ -23,6 +31,35 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
                 .where(boardIdEq(boardId),
                         isDeletedCheck())
                 .fetchFirst());
+    }
+
+    @Override
+    public Page<GetAllResponse> findAllDetailBoardsByCreatedDate(Pageable pageable) {
+        List<GetAllResponse> content = queryFactory
+                .select(new QBoardDto_GetAllResponse(board.boardId,
+                        board.title,
+                        board.content,
+                        board.createdDate,
+                        image.imageKey))
+                .from(board)
+                .leftJoin(board.images, image)
+                .orderBy(board.createdDate.desc())
+                .groupBy(board.boardId)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<GetAllResponse> countQuery = queryFactory
+                .select(new QBoardDto_GetAllResponse(board.boardId,
+                        board.title,
+                        board.content,
+                        board.createdDate,
+                        image.imageKey))
+                .from(board)
+                .leftJoin(board.images, image)
+                .orderBy(board.createdDate.desc())
+                .groupBy(board.boardId);
+        return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchCount());
     }
 
     private BooleanExpression isDeletedCheck() {
