@@ -12,6 +12,8 @@ import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public abstract class BoardDto {
@@ -87,8 +89,8 @@ public abstract class BoardDto {
         private String title;
         private String content;
         private String boardType;
+        private LocalDateTime createdDate;
         private List<String> imageKeys;
-
     }
 
 

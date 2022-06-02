@@ -29,8 +29,8 @@ public interface BoardMapper{
     @Mapping(target = "title", source = "title")
     @Mapping(target = "content", source = "content")
     @Mapping(target = "boardType", source = "boardType")
+    @Mapping(target = "createdDate", source = "createdDate")
     @Mapping(target = "imageKeys", source = "images", qualifiedByName = "getImageKeys")
     GetDetailResponse toGetDetailResponse(Board board);
-
 
 }
