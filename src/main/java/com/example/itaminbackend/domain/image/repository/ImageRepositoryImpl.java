@@ -21,7 +21,6 @@ public class ImageRepositoryImpl implements ImageRepositoryCustom {
     @Override
     public Optional<Image> findNotDeletedByImageId(Long imageId) {
         return Optional.ofNullable(queryFactory.selectFrom(image)
-                .from(image)
                 .where(imageIdEq(imageId),
                  isDeletedCheck())
                 .fetchFirst());

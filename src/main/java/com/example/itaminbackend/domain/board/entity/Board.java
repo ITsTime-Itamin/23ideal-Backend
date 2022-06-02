@@ -22,6 +22,7 @@ public class Board extends BaseTimeEntity {
     private Long boardId;
     private String title;
     private String content;
+    private boolean isDeleted;
 
     @Enumerated(EnumType.STRING)
     private EBoardType boardType;

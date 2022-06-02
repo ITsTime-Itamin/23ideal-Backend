@@ -4,6 +4,7 @@ import com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardType
 import com.example.itaminbackend.domain.board.entity.Board;
 import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.global.util.Enum;
+import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,8 @@ import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public abstract class BoardDto {
@@ -41,7 +44,7 @@ public abstract class BoardDto {
     @AllArgsConstructor
     @ApiModel(description = "게시판 등록을 위한 응답 객체")
     public static class CreateResponse {
-        private final Long boardId;
+        private Long boardId;
     }
 
     @Getter
@@ -75,7 +78,40 @@ public abstract class BoardDto {
     @AllArgsConstructor
     @ApiModel(description = "게시판 수정을 위한 응답 객체")
     public static class UpdateResponse {
-        private final Long boardId;
+        private Long boardId;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @ApiModel(description = "게시판 조회를 위한 응답 객체")
+    public static class GetDetailResponse {
+        private Long boardId;
+        private String title;
+        private String content;
+        private String boardType;
+        private LocalDateTime createdDate;
+        private List<String> imageKeys;
+    }
+
+    @Getter
+    @Builder
+    @ApiModel(description = "게시판 전체 조회를 위한 응답 객체")
+    public static class GetAllResponse {
+        private Long boardId;
+        private String title;
+        private String content;
+        private LocalDateTime createdDate;
+        private String imageKey;
+
+        @QueryProjection
+        public GetAllResponse(Long boardId, String title, String content, LocalDateTime createdDate, String imageKey) {
+            this.boardId = boardId;
+            this.title = title;
+            this.content = content;
+            this.createdDate = createdDate;
+            this.imageKey = imageKey;
+        }
     }
 
 

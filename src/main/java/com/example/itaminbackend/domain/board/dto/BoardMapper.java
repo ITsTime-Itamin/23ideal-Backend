@@ -6,6 +6,8 @@ import com.example.itaminbackend.domain.board.entity.Board;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.Optional;
+
 import static com.example.itaminbackend.domain.board.dto.BoardDto.*;
 
 @Mapper(componentModel = "spring", uses = BoardMapperSupport.class)
@@ -22,4 +24,13 @@ public interface BoardMapper{
 
     @Mapping(target = "boardId", source = "boardId")
     UpdateResponse toUpdateResponse(Board board);
+
+    @Mapping(target = "boardId", source = "boardId")
+    @Mapping(target = "title", source = "title")
+    @Mapping(target = "content", source = "content")
+    @Mapping(target = "boardType", source = "boardType")
+    @Mapping(target = "createdDate", source = "createdDate")
+    @Mapping(target = "imageKeys", source = "images", qualifiedByName = "getImageKeys")
+    GetDetailResponse toGetDetailResponse(Board board);
+
 }
