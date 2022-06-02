@@ -43,6 +43,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
                         image.imageKey))
                 .from(board)
                 .leftJoin(board.images, image)
+                .where(isDeletedCheck())
                 .orderBy(board.createdDate.desc())
                 .groupBy(board.boardId)
                 .offset(pageable.getOffset())
@@ -57,6 +58,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
                         image.imageKey))
                 .from(board)
                 .leftJoin(board.images, image)
+                .where(isDeletedCheck())
                 .orderBy(board.createdDate.desc())
                 .groupBy(board.boardId);
         return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchCount());
