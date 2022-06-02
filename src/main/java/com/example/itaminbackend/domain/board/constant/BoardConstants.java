@@ -20,7 +20,9 @@ public class BoardConstants {
     @RequiredArgsConstructor
     public enum EBoardResponseMessage{
         eCreateSuccess("게시판을 작성했습니다."),
-        eUpdateSuccess("게시판을 수정했습니다.");
+        eUpdateSuccess("게시판을 수정했습니다."),
+        eGetDetailSuccess("게시판을 조회했습니다."),
+        eDeleteSuccess("게시판을 삭제했습니다.");
         private final String message;
     }
 

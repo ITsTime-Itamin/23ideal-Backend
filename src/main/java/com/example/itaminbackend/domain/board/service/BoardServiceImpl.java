@@ -2,6 +2,7 @@ package com.example.itaminbackend.domain.board.service;
 
 import com.example.itaminbackend.domain.board.constant.BoardConstants;
 import com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardType;
+import com.example.itaminbackend.domain.board.dto.BoardDto;
 import com.example.itaminbackend.domain.board.dto.BoardDto.CreateRequest;
 import com.example.itaminbackend.domain.board.dto.BoardDto.CreateResponse;
 import com.example.itaminbackend.domain.board.dto.BoardDto.UpdateRequest;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+
+import static com.example.itaminbackend.domain.board.dto.BoardDto.*;
 
 @Service
 @RequiredArgsConstructor
@@ -51,12 +54,24 @@ public class BoardServiceImpl implements BoardService{
         return this.boardMapper.toUpdateResponse(board);
     }
 
+    @Override
+    public GetDetailResponse getDetailBoard(Long boardId) {
+        return this.boardMapper.toGetDetailResponse(this.validateBoardId(boardId));
+    }
+
+    @Override
+    @Transactional
+    public void deleteBoard(Long boardId) {
+        Board board = this.validateBoardId(boardId);
+        board.setDeleted(true);
+    }
+
     /**
      * validate
      */
 
     public Board validateBoardId(Long boardId) {
-        return this.boardRepository.findById(boardId).orElseThrow(NotFoundBoardException::new);
+        return this.boardRepository.findNotDeletedByBoardId(boardId).orElseThrow(NotFoundBoardException::new);
     }
 
 }

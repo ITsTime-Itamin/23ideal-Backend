@@ -41,7 +41,7 @@ public abstract class BoardDto {
     @AllArgsConstructor
     @ApiModel(description = "게시판 등록을 위한 응답 객체")
     public static class CreateResponse {
-        private final Long boardId;
+        private Long boardId;
     }
 
     @Getter
@@ -75,7 +75,20 @@ public abstract class BoardDto {
     @AllArgsConstructor
     @ApiModel(description = "게시판 수정을 위한 응답 객체")
     public static class UpdateResponse {
-        private final Long boardId;
+        private Long boardId;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @ApiModel(description = "게시판 조회를 위한 응답 객체")
+    public static class GetDetailResponse {
+        private Long boardId;
+        private String title;
+        private String content;
+        private String boardType;
+        private List<String> imageKeys;
+
     }
 
 

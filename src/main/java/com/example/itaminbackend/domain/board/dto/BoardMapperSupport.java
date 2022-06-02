@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -18,5 +19,14 @@ public class BoardMapperSupport {
     @Named("saveImages")
     public List<Image> saveImages(List<MultipartFile> files) throws IOException {
         return this.imageService.saveImages(files);
+    }
+
+    @Named("getImageKeys")
+    public List<String> getImageKeys(List<Image> images){
+        List<String> imageKeys = new ArrayList<>();
+        for (Image image : images) {
+            imageKeys.add(image.getImageKey());
+        }
+        return imageKeys;
     }
 }
