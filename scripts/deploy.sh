@@ -18,4 +18,4 @@ sudo docker rmi itamin-backend
 
 sudo docker build -t itamin-backend .
 
-sudo docker-compose up
+sudo docker-compose up -d

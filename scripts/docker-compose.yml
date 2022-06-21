@@ -32,12 +32,12 @@ services:
   application:
     image: itamin-backend
     environment:
-      JAVA_OPTS: -Djasypt.encryptor.password=SPRING_JASYPT_PASSWORD
       SPRING_DATASOURCE_URL: jdbc:mysql://db:4400/itamin?useUnicode=true&characterEncoding=utf8
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       TZ: Asia/Seoul
       SPRING_PROFILES_ACTIVE: prod
+    env_file: ./itamin-env/.env.password
     ports:
       - 80:80
     container_name: itamin-server
