@@ -28,9 +28,10 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
-    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'commons-io:commons-io:2.11.0'
+    implementation 'com.google.apis:google-api-services-oauth2:v1-rev155-1.25.0'
 
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'com.querydsl:querydsl-jpa'
