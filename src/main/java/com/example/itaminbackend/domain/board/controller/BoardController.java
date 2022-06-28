@@ -8,6 +8,7 @@ import com.example.itaminbackend.domain.board.dto.BoardDto.UpdateResponse;
 import com.example.itaminbackend.domain.board.dto.BoardDto.CreateRequest;
 import com.example.itaminbackend.domain.board.dto.BoardDto.CreateResponse;
 import com.example.itaminbackend.domain.board.service.BoardService;
+import com.example.itaminbackend.global.config.security.util.SecurityUtils;
 import com.example.itaminbackend.global.dto.PaginationDto;
 import com.example.itaminbackend.global.dto.ResponseDto;
 import io.swagger.annotations.Api;
