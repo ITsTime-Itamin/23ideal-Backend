@@ -1,14 +1,17 @@
 package com.example.itaminbackend.global.exception;
 
+import com.example.itaminbackend.domain.user.exception.NotFoundEmailException;
 import com.example.itaminbackend.global.dto.ApiErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import static com.example.itaminbackend.domain.user.constant.UserConstants.UserExceptionList.NOT_FOUND_EMAIL;
 import static java.util.Objects.requireNonNull;
 
 @Slf4j
@@ -54,7 +57,7 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiErrorResponse(INTERNAL_SERVER_ERROR_CODE, "데이터 연결 에러가 발생했습니다."));
+                .body(new ApiErrorResponse(INTERNAL_SERVER_ERROR_CODE, "데이터 접근 에러가 발생했습니다."));
     }
 
     @ExceptionHandler(RuntimeException.class)
@@ -68,5 +71,23 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ApiErrorResponse(INTERNAL_SERVER_ERROR_CODE, "런타임 에러가 발생했습니다."));
+    }
+
+
+    /**
+     * Security
+     */
+
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    public ResponseEntity<ApiErrorResponse> internalAuthenticationServiceException(InternalAuthenticationServiceException e) {
+        log.error(
+                LOG_FORMAT,
+                e.getClass().getSimpleName(),
+                NOT_FOUND_EMAIL.getErrorCode(),
+                e.getMessage()
+        );
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ApiErrorResponse(NOT_FOUND_EMAIL.getErrorCode(), e.getMessage()));
     }
 }

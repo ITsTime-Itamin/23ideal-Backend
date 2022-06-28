@@ -1,4 +1,4 @@
-package com.example.itaminbackend.global.jwt;
+package com.example.itaminbackend.global.config.security.jwt;
 
 import com.example.itaminbackend.global.constant.GlobalConstants.JWTExceptionList;
 import io.jsonwebtoken.ExpiredJwtException;

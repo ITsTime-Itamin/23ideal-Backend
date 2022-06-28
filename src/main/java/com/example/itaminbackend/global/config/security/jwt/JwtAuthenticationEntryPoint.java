@@ -1,6 +1,7 @@
-package com.example.itaminbackend.global.jwt;
+package com.example.itaminbackend.global.config.security.jwt;
 
 import org.json.simple.JSONObject;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         //지원되지 않는 토큰인 경우
         else if(exception.equals(JWTExceptionList.UNSUPPORTED_TOKEN.getErrorCode())) setResponse(response, JWTExceptionList.UNSUPPORTED_TOKEN);
         else setResponse(response, JWTExceptionList.ACCESS_DENIED);
+
     }
 
     private void setResponse(HttpServletResponse response, JWTExceptionList exceptionCode) throws IOException {
