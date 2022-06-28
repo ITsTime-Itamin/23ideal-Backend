@@ -1,9 +1,9 @@
 package com.example.itaminbackend.global.config.security;
 
-import com.example.itaminbackend.global.jwt.JwtAccessDeniedHandler;
-import com.example.itaminbackend.global.jwt.JwtAuthenticationEntryPoint;
-import com.example.itaminbackend.global.jwt.JwtSecurityConfig;
-import com.example.itaminbackend.global.jwt.TokenProvider;
+import com.example.itaminbackend.global.config.security.jwt.JwtAccessDeniedHandler;
+import com.example.itaminbackend.global.config.security.jwt.JwtAuthenticationEntryPoint;
+import com.example.itaminbackend.global.config.security.jwt.JwtSecurityConfig;
+import com.example.itaminbackend.global.config.security.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -38,21 +38,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-
+                .formLogin().disable()
+                .httpBasic().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-
                 .accessDeniedHandler(jwtAccessDeniedHandler)
-
                 .and()
-                .headers()
-                .frameOptions()
-                .sameOrigin()
-
+                .headers().frameOptions().sameOrigin()
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/swagger-resources/**").permitAll()
@@ -62,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/image/**").permitAll()
                 .antMatchers("/api/v1/houses/**").permitAll()
                 .antMatchers("/api/v1/boards/**").permitAll()
+                .antMatchers("/api/v1/users/**").permitAll()
 
                 .anyRequest().authenticated()
                 .and()

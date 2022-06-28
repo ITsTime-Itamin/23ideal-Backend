@@ -1,9 +1,14 @@
-package com.example.itaminbackend.global.jwt;
+package com.example.itaminbackend.global.config.security.jwt;
 
+import com.example.itaminbackend.domain.user.entity.User;
+import com.example.itaminbackend.domain.user.exception.NotFoundEmailException;
+import com.example.itaminbackend.domain.user.repository.UserRepository;
+import com.example.itaminbackend.global.config.security.service.CustomUserDetails;
 import com.example.itaminbackend.global.dto.TokenInfoResponse;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -22,23 +26,23 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class TokenProvider implements InitializingBean {
 
-
     private static final String AUTHORITIES_KEY = "auth";
-    private final String secret;
-    private final long accessTokenValidityTime;
-    private final long refreshTokenValidityTime;
+
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.access-token-validity-in-seconds}")
+    private long accessTokenValidityTime;
+
+    @Value("${jwt.refresh-token-validity-in-seconds}")
+    private long refreshTokenValidityTime;
+
+    private final UserRepository userRepository;
 
     private Key key;
-
-    public TokenProvider(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
-        this.secret = secret;
-        this.accessTokenValidityTime = tokenValidityInSeconds * 30;
-        this.refreshTokenValidityTime = tokenValidityInSeconds * 60 * 24 * 14;
-    }
 
     @Override
     public void afterPropertiesSet() {
@@ -78,9 +82,9 @@ public class TokenProvider implements InitializingBean {
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
-        User principal = new User(claims.getSubject(), "", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        //User user = new User(claims.getSubject(), "", authorities);
+        User user = this.userRepository.findByEmail(claims.getSubject()).orElseThrow(NotFoundEmailException::new);
+        return new UsernamePasswordAuthenticationToken(new CustomUserDetails(user), token, authorities);
     }
 
     public boolean validateToken(String token){

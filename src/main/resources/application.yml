@@ -15,6 +15,8 @@ spring:
     username: ENC(fpnzm6OeJF3hBCULOgeh0w==)
     password: ENC(fpnzm6OeJF3hBCULOgeh0w==)
     driver-class-name: com.mysql.cj.jdbc.Driver
+    initialize: true
+    initialization-mode: always
   servlet:
     multipart:
       max-file-size: 10MB
@@ -27,6 +29,7 @@ spring:
         show_sql: true
         format_sql: true
     database-platform: org.hibernate.dialect.MySQL5Dialect
+    defer-datasource-initialization: true
   data:
     web:
       pageable:
@@ -77,7 +80,8 @@ jasypt:
 jwt:
   header: Authorization
   secret: ENC(AzJYqum03D6EQohX92szB6i2yqhHVr7ToZvRvtt/hYypx2VZCW8M4DD9XwdUKu0D9w8gVsTcZ5TLTcm+FabTtpx1MaoY6x8a0AOnJ4HoPba4kEF/KxWYd2z5WhaKrK37BMkbzY64rjYxvcQcYyiu5nNO6AVDnswOcknAYQm6l7ST+Rqt71IFpmWuW+E5O7/f)
-  token-validity-in-seconds: 60000
+  access-token-validity-in-seconds: 180000
+  refresh-token-validity-in-seconds: 1209600000
 
 ---
 
@@ -152,4 +156,5 @@ jasypt:
 jwt:
   header: Authorization
   secret: ENC(AzJYqum03D6EQohX92szB6i2yqhHVr7ToZvRvtt/hYypx2VZCW8M4DD9XwdUKu0D9w8gVsTcZ5TLTcm+FabTtpx1MaoY6x8a0AOnJ4HoPba4kEF/KxWYd2z5WhaKrK37BMkbzY64rjYxvcQcYyiu5nNO6AVDnswOcknAYQm6l7ST+Rqt71IFpmWuW+E5O7/f)
-  token-validity-in-seconds: 60000
+  access-token-validity-in-seconds: 180000
+  refresh-token-validity-in-seconds: 1209600000

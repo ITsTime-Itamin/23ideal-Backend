@@ -1,4 +1,4 @@
-package com.example.itaminbackend.global.jwt;
+package com.example.itaminbackend.global.config.security.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
