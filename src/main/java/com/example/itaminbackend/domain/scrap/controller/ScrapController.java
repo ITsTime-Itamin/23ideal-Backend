@@ -62,6 +62,4 @@ public class ScrapController {
                 , this.scrapService.getBoardsByScrapRanking(pageable)));
     }
 
-
-
 }

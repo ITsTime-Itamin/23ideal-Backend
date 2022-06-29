@@ -13,6 +13,8 @@ import com.example.itaminbackend.domain.board.exception.NotFoundBoardException;
 import com.example.itaminbackend.domain.board.repository.BoardRepository;
 import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.domain.image.service.ImageService;
+import com.example.itaminbackend.domain.user.entity.User;
+import com.example.itaminbackend.global.config.security.util.SecurityUtils;
 import com.example.itaminbackend.global.dto.PaginationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,6 +38,8 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public CreateResponse createBoard(CreateRequest createRequest) {
         Board board = this.boardMapper.toEntity(createRequest);
+        User user = SecurityUtils.getLoggedInUser();
+        //user.setBoards(board);
         return this.boardMapper.toCreateResponse(this.boardRepository.save(board));
     }
 
@@ -55,6 +59,8 @@ public class BoardServiceImpl implements BoardService{
         }
         List<Image> images = this.imageService.saveImages(updateRequest.getFiles());
         board.setImages(images);
+        User user = SecurityUtils.getLoggedInUser();
+        user.setBoards(board);
         return this.boardMapper.toUpdateResponse(board);
     }
 
