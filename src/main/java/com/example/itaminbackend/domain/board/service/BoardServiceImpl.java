@@ -39,7 +39,7 @@ public class BoardServiceImpl implements BoardService{
     public CreateResponse createBoard(CreateRequest createRequest) {
         Board board = this.boardMapper.toEntity(createRequest);
         User user = SecurityUtils.getLoggedInUser();
-        //user.setBoards(board);
+        user.setBoards(board);
         return this.boardMapper.toCreateResponse(this.boardRepository.save(board));
     }
 
@@ -47,6 +47,8 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     public UpdateResponse updateBoard(UpdateRequest updateRequest) {
         Board board = this.validateBoardId(Long.parseLong(updateRequest.getBoardId()));
+        User user = SecurityUtils.getLoggedInUser();
+        user.setBoards(board);
         return updateBoard(board, updateRequest);
     }
 
