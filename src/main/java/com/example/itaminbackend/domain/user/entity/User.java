@@ -1,10 +1,14 @@
 package com.example.itaminbackend.domain.user.entity;
 
+import com.example.itaminbackend.domain.board.entity.Board;
+import com.example.itaminbackend.domain.scrap.entity.Scrap;
 import com.example.itaminbackend.domain.user.constant.UserConstants;
 import com.example.itaminbackend.domain.user.constant.UserConstants.Role;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -60,4 +64,12 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Board> boards = new ArrayList<>();
+
+    public void setBoards(Board board){
+        this.boards.add(board);
+        board.setUser(this);
+    }
 }

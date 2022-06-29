@@ -3,6 +3,7 @@ package com.example.itaminbackend.domain.board.entity;
 import com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardType;
 import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.domain.scrap.entity.Scrap;
+import com.example.itaminbackend.domain.user.entity.User;
 import com.example.itaminbackend.global.entity.BaseTimeEntity;
 import lombok.*;
 
@@ -33,6 +34,10 @@ public class Board extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "board")
     private List<Scrap> scraps = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Builder
     public Board(String title, String content){
