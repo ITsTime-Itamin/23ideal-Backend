@@ -9,14 +9,20 @@ import com.example.itaminbackend.domain.board.exception.NotFoundBoardException;
 import com.example.itaminbackend.domain.board.repository.BoardRepository;
 import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.domain.image.service.ImageService;
+import com.example.itaminbackend.domain.user.entity.User;
+import com.example.itaminbackend.global.config.security.util.SecurityUtils;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Spy;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +34,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 
 class BoardServiceImplTest extends BaseTest {
@@ -47,6 +54,20 @@ class BoardServiceImplTest extends BaseTest {
 
     @Mock
     private BoardMapperSupport boardMapperSupport;
+
+    private static MockedStatic<SecurityUtils> securityUtilsMock;
+
+    @BeforeAll
+    static void beforeAll() {
+        User user = new User();
+        securityUtilsMock = mockStatic(SecurityUtils.class);
+        securityUtilsMock.when(SecurityUtils::getLoggedInUser).thenReturn(user);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        securityUtilsMock.close();
+    }
 
     @DisplayName("게시판 작성 테스트")
     @Test
