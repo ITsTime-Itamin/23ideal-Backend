@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findByEmail(email).orElseThrow(NotFoundEmailException::new);
     }
 
-    private final String key="ddfadaewfd";
+    private final String key="ddfaafdsafasdfasfasdfasdfasdfasdfasdfadfasdfasdfasdfasdfasdfasdfasdfasdfadfadsfasdfasdfdaewfd";
 
     @Value("${spring.security.oauth2.client.registration.google.clientId}")
     public String googleClientId;
@@ -247,6 +247,7 @@ public class UserServiceImpl implements UserService {
         String responseBody = get(apiURL,requestHeaders);
 
         ObjectMapper mapper=new ObjectMapper();
+        System.out.println(responseBody);
         // String json="{\"resultcode\": \"00\", \"message\": \"success\", \"response\": {\"email\": \"openapi@naver.com\", \"name\": \"OpenAPI\", \"profile_image\": \"https://ssl.pstatic.net/static/pwe/address/nodata_33x33.gif\"}}";
         Map<String, String> map= mapper.readValue(responseBody,Map.class);
 
@@ -256,15 +257,15 @@ public class UserServiceImpl implements UserService {
 
 
         String email=map3.get("email").toString();
-        System.out.println(email);
+        log.info(email);
         String name=map3.get("name").toString();
+        log.info(name);
         String pictureUrl=map3.get("profile_image").toString();
+        log.info(pictureUrl);
 
         Boolean emailVerified=true;
 
         User user=new User(name,email,pictureUrl,emailVerified);
-        System.out.println("setting");
-
 
         saveOrUpdate(user);
         return providenaverJWTToken(user);
