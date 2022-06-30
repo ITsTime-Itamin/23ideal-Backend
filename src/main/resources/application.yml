@@ -54,8 +54,8 @@ spring:
               - profile
           naver:
             apiURL: "https://openapi.naver.com/v1/nid/me"
-            client-id: ENC(cvGVif9LzPMgXpYrsxg4qP8kIc4lMFbT4vS5h47sgJQ=)
-            client-secret: ENC(dHR9hhj/HdiqJxXQ442LrrONbGAqdWmC)
+            client-id: ENC(pVwoRUttZ9GZaPLTsL36ktnR7pDQJETzuXDo8MPeFIc=)
+            client-secret: ENC(2nrUgXZHbiRYiCTY3M+4rjGt71vukcO0)
             redirect-uri: "http://localhost:8080/login/oauth2/code/naver"
             authorization-grant-type: authorization_code
             scope: name, email, profile_image
