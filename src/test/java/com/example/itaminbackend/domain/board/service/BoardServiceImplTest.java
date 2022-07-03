@@ -56,10 +56,12 @@ class BoardServiceImplTest extends BaseTest {
     private BoardMapperSupport boardMapperSupport;
 
     private static MockedStatic<SecurityUtils> securityUtilsMock;
+    private static User user;
 
     @BeforeAll
     static void beforeAll() {
-        User user = new User();
+        user = new User();
+        user.setUserId(1000L);
         securityUtilsMock = mockStatic(SecurityUtils.class);
         securityUtilsMock.when(SecurityUtils::getLoggedInUser).thenReturn(user);
     }
@@ -100,6 +102,7 @@ class BoardServiceImplTest extends BaseTest {
                 .title("testTitle")
                 .content("testContent")
                 .images(extractImageFrom(updateRequest))
+                .user(user)
                 .build();
         given(this.boardRepository.findNotDeletedByBoardId(anyLong())).willReturn(Optional.of(board));
         given(this.imageService.saveImages(updateRequest.getFiles())).willReturn(extractImageFrom(updateRequest));
