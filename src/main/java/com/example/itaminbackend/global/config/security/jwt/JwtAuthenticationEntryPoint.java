@@ -23,7 +23,10 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         //잘못된 타입의 토큰인 경우
         else if(exception.equals(JWTExceptionList.WRONG_TYPE_TOKEN.getErrorCode())) setResponse(response, JWTExceptionList.WRONG_TYPE_TOKEN);
         //토큰 만료된 경우
-        else if(exception.equals(JWTExceptionList.EXPIRED_TOKEN.getErrorCode())) setResponse(response, JWTExceptionList.EXPIRED_TOKEN);
+        else if(exception.equals(JWTExceptionList.EXPIRED_TOKEN.getErrorCode())) {
+            System.out.println("토큰만료된경우");
+            setResponse(response, JWTExceptionList.EXPIRED_TOKEN);
+        }
         //지원되지 않는 토큰인 경우
         else if(exception.equals(JWTExceptionList.UNSUPPORTED_TOKEN.getErrorCode())) setResponse(response, JWTExceptionList.UNSUPPORTED_TOKEN);
         else setResponse(response, JWTExceptionList.ACCESS_DENIED);

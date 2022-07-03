@@ -3,6 +3,8 @@ package com.example.itaminbackend.domain.scrap.repository;
 import com.example.itaminbackend.domain.board.entity.Board;
 import com.example.itaminbackend.domain.scrap.dto.QScrapDto_BoardInquiryByScrapRankingResponse;
 import com.example.itaminbackend.domain.scrap.dto.ScrapDto.BoardInquiryByScrapRankingResponse;
+import com.example.itaminbackend.domain.scrap.entity.Scrap;
+import com.example.itaminbackend.domain.user.entity.User;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -35,15 +37,15 @@ public class ScrapRepositoryImpl implements ScrapRepositoryCustom{
                 .fetchCount());
     }
 
-//    @Override
-//    public Optional<Scrap> findByUserAndDiaryAndNotDeleted(User user, Diary diary) {
-//        return Optional.ofNullable(queryFactory.selectFrom(scrap)
-//                .from(scrap)
-//                .where(diaryEq(diary),
-//                        userEq(user),
-//                        isDeletedCheck())
-//                .fetchOne());
-//    }
+    @Override
+    public Optional<Scrap> findByUserAndBoardAndNotDeleted(User user, Board board) {
+        return Optional.ofNullable(queryFactory.selectFrom(scrap)
+                .from(scrap)
+                .where(boardEq(board),
+                        userEq(user),
+                        isDeletedCheck())
+                .fetchOne());
+    }
 
     @Override
     public Page<BoardInquiryByScrapRankingResponse> findAllBoardsByScrapRanking(Pageable pageable) {
@@ -82,5 +84,5 @@ public class ScrapRepositoryImpl implements ScrapRepositoryCustom{
     private BooleanExpression isDeletedCheck() {return scrap.isDeleted.eq(false);}
 
     private BooleanExpression boardEq(Board board) {return board != null ? scrap.board.eq(board) : null;}
-    //private BooleanExpression userEq(User user) {return user != null ? scrap.user.eq(user) : null;}
+    private BooleanExpression userEq(User user) {return user != null ? scrap.user.eq(user) : null;}
 }

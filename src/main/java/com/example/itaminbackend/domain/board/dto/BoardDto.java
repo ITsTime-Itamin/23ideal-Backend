@@ -10,9 +10,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,6 +38,12 @@ public abstract class BoardDto {
         @ApiModelProperty(notes = "게시판 유형을 입력해 주세요.")
         @Enum(enumClass = EBoardType.class)
         private String boardType;
+
+        @NotBlank(message = "게시판 마감일자를 입력해 주세요.")
+        @ApiModelProperty(notes = "게시판 마감일자를 입력해 주세요.")
+        @Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}\\s[0-9]{2}:[0-9]{2}:[0-9]{2}"
+                , message = "날짜 형식이 맞지 않습니다. yyyy-mm-ss hh:mm:ss 형식으로 입력해주세요.")
+        private String deadLineDate;
 
         private List<MultipartFile> files;
     }
@@ -69,6 +77,12 @@ public abstract class BoardDto {
         @ApiModelProperty(notes = "게시판 유형을 입력해 주세요.")
         @Enum(enumClass = EBoardType.class)
         private String boardType;
+
+        @NotBlank(message = "게시판 마감일자를 입력해 주세요.")
+        @ApiModelProperty(notes = "게시판 마감일자를 입력해 주세요.")
+        @Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}\\s[0-9]{2}:[0-9]{2}:[0-9]{2}"
+                , message = "날짜 형식이 맞지 않습니다. yyyy-mm-ss hh:mm:ss 형식으로 입력해주세요.")
+        private String deadLineDate;
 
         private List<MultipartFile> files;
     }

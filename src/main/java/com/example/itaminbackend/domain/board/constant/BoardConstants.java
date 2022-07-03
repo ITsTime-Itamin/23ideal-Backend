@@ -30,18 +30,19 @@ public class BoardConstants {
     @Getter
     @RequiredArgsConstructor
     public enum EBoardType{
-        eNotice("공지사항"),
-        ePromotion("홍보"),
-        eFreeBoard("자유게시판"),
-        eReview("후기"),
-        eJobPosting("취업공고");
+        NOTICE("공지사항"),
+        PROMOTION("홍보"),
+        FREE("자유게시판"),
+        REVIEW("후기"),
+        JOB("취업공고");
         private final String value;
     }
 
     @Getter
     @RequiredArgsConstructor
     public enum BoardExceptionList {
-        NOT_FOUND_BOARD("B0001", HttpStatus.NOT_FOUND, "해당 boardId로 Board를 찾을 수 없습니다.");
+        NOT_FOUND_BOARD("B0001", HttpStatus.NOT_FOUND, "해당 boardId로 Board를 찾을 수 없습니다."),
+        NOT_BOARD_WRITER("B0002", HttpStatus.CONFLICT, "해당 게시판을 작성한 유저가 아닙니다.");
 
         private final String errorCode;
         private final HttpStatus httpStatus;

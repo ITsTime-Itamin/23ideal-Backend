@@ -31,10 +31,10 @@ public class UserConstants {
 
     @Getter
     @RequiredArgsConstructor
-    public enum EBoardResponseMessage{
+    public enum EUserResponseMessage{
         GOOGLELOGIN_SUCCESS("구글로그인을 했습니다."),
-        NAVERLOGIN_SUCCES("네이버로그인을 했습니다");
+        NAVERLOGIN_SUCCES("네이버로그인을 했습니다"),
+        LOGIN_SUCCESS("로그인에 성공했습니다.");
         private final String message;
     }
-
 }

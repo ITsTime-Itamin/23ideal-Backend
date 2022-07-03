@@ -12,7 +12,6 @@ import org.mapstruct.Mapper;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Mapper(componentModel = "spring", uses = ScrapMapperSupport.class)
 public abstract class ScrapDto {
 
     @Getter
@@ -41,9 +40,9 @@ public abstract class ScrapDto {
     @ApiModel(description = "유저의 스크랩 생성/삭제 요청 객체")
     public static class ScrapChangeRequest {
 
-        @NotNull(message = "스크랩 하고자하는 diaryId를 입력해 주세요.")
-        @ApiModelProperty(notes = "diaryId를 입력해 주세요.")
-        private Long diaryId;
+        @NotNull(message = "스크랩 하고자하는 boardId를 입력해 주세요.")
+        @ApiModelProperty(notes = "boardId를 입력해 주세요.")
+        private Long boardId;
     }
 
     @Getter
@@ -53,7 +52,7 @@ public abstract class ScrapDto {
     public static class ScrapChangeResponse {
 
         private Long scrapId;
-        private boolean isCreated;
+        private Boolean isCreated;
     }
 
     @Getter
@@ -71,19 +70,17 @@ public abstract class ScrapDto {
     @ApiModel(description = "해당 유저의 해당 다이어리 스크랩 여부 조회 요청 객체")
     public static class ScrapOrNotRequest {
 
-        @NotNull(message = "diaryId를 입력해 주세요.")
-        @ApiModelProperty(notes = "diaryId를 입력해 주세요.")
-        private Long diaryId;
+        @NotNull(message = "boardId를 입력해 주세요.")
+        @ApiModelProperty(notes = "boardId를 입력해 주세요.")
+        private Long boardId;
     }
 
     @Getter
     @AllArgsConstructor
-    @Builder
     @ApiModel(description = "해당 유저의 해당 다이어리 스크랩 여부 조회 응답 객체")
+    @Builder
     public static class ScrapOrNotResponse {
-
-        boolean isScraped;
-
+        private Boolean isScraped;
     }
 
 
