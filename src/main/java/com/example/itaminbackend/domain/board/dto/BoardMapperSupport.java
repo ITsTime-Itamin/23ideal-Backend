@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,5 +30,12 @@ public class BoardMapperSupport {
             imageKeys.add(image.getImageKey());
         }
         return imageKeys;
+    }
+
+    @Named("toLocalDateTime")
+    public LocalDateTime toLocalDateTime(String deadLineDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime changedDeadLineDate = LocalDateTime.parse(deadLineDate, formatter);
+        return changedDeadLineDate;
     }
 }

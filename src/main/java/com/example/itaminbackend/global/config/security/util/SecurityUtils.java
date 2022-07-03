@@ -6,10 +6,12 @@ import com.example.itaminbackend.global.config.security.service.CustomUserDetail
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Transactional
 public class SecurityUtils {
 
     public static User getLoggedInUser() {

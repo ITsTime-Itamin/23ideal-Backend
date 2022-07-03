@@ -1,7 +1,9 @@
 package com.example.itaminbackend.domain.scrap.entity;
 
 import com.example.itaminbackend.domain.board.entity.Board;
+import com.example.itaminbackend.domain.user.entity.User;
 import lombok.*;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
 import javax.persistence.*;
 
@@ -19,9 +21,9 @@ public class Scrap {
 
     private boolean isDeleted;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
@@ -31,10 +33,10 @@ public class Scrap {
      * 연관관계 메서드
      */
 
-//    public void setUser(User user) {
-//        this.user = user;
-//        user.getScraps().add(this);
-//    }
+    public void setUser(User user) {
+        this.user = user;
+        user.getScraps().add(this);
+    }
 
     public void setBoard(Board board) {
         this.board = board;

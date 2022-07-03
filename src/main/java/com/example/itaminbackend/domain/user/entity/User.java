@@ -68,6 +68,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Board> boards = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Scrap> scraps = new ArrayList<>();
+
     public void setBoards(Board board){
         this.boards.add(board);
         board.setUser(this);

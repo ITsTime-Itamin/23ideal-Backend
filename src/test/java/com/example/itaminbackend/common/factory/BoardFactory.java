@@ -22,14 +22,14 @@ public class BoardFactory {
         CreateRequest fixture1 = CreateRequest.builder()
                 .title("게시판1")
                 .content("자유게시판")
-                .boardType(EBoardType.eFreeBoard.name())
+                .boardType(EBoardType.FREE.name())
                 .files(images)
                 .build();
 
         CreateRequest fixture2 = CreateRequest.builder()
                 .title("게시판2")
                 .content("취업공고")
-                .boardType(EBoardType.eJobPosting.name())
+                .boardType(EBoardType.FREE.name())
                 .files(images)
                 .build();
         return List.of(fixture1, fixture2);
@@ -41,7 +41,7 @@ public class BoardFactory {
                 .boardId("101")
                 .title("변경된게시판1")
                 .content("변경된취업공고")
-                .boardType(EBoardType.eJobPosting.name())
+                .boardType(EBoardType.JOB.name())
                 .files(images)
                 .build();
 
@@ -49,7 +49,7 @@ public class BoardFactory {
                 .boardId("102")
                 .title("게시판2")
                 .content("변경된자유게시판")
-                .boardType(EBoardType.eFreeBoard.name())
+                .boardType(EBoardType.FREE.name())
                 .files(images)
                 .build();
         return List.of(fixture1, fixture2);

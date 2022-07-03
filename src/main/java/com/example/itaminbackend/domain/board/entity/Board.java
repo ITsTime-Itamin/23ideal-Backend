@@ -8,6 +8,7 @@ import com.example.itaminbackend.global.entity.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class Board extends BaseTimeEntity {
     private Long boardId;
     private String title;
     private String content;
+    private LocalDateTime deadLineDate;
     private boolean isDeleted;
 
     @Enumerated(EnumType.STRING)
@@ -52,6 +54,11 @@ public class Board extends BaseTimeEntity {
         this.images = images;
         for (Image image : images) {
             image.setBoard(this);}
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        user.getBoards().add(this);
     }
 
 }
