@@ -32,11 +32,10 @@ public class OpenApiJobConfiguration {
 
     @Bean
     public Job openApiJob() throws Exception {
-//        return jobBuilderFactory.get("openApiJob")
-//                .start(deleteDataStep())
-//                .next(openApiStep())
-//                .build();
-        return null;
+        return jobBuilderFactory.get("openApiJob")
+                .start(deleteDataStep())
+                .next(openApiStep())
+                .build();
     }
 
     @Bean
