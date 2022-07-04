@@ -12,9 +12,11 @@ public interface BoardService {
 
     CreateResponse createBoard(CreateRequest createRequest);
     UpdateResponse updateBoard(UpdateRequest updateRequest);
-    Board validateBoardId(Long boardId);
     GetDetailResponse getDetailBoard(Long boardId);
-    void deleteBoard(Long boardId);
+    Board deleteBoard(Long boardId);
     PaginationDto<List<GetAllResponse>> getAllDetailBoards(Pageable pageable);
+
+    Board validateBoardId(Long boardId);
+    void validateCreatedUser(Board board);
 
 }
