@@ -1,14 +1,18 @@
 package com.example.itaminbackend.common.factory;
 
 import com.example.itaminbackend.domain.board.entity.Board;
+import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.domain.user.entity.User;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardType;
 import static com.example.itaminbackend.domain.board.dto.BoardDto.CreateRequest;
 import static com.example.itaminbackend.domain.board.dto.BoardDto.UpdateRequest;
+import static java.util.stream.Collectors.toList;
 
 public class BoardFactory {
 
@@ -58,11 +62,14 @@ public class BoardFactory {
     }
 
     public static List<Board> mockBoards(){
+        List<MultipartFile> multipartFileList = List.of(FileFactory.getTestImage1(), FileFactory.getTestImage2());
+
         Board fixture1 = Board.builder()
                 .boardId(101L)
                 .title("title1")
                 .content("content1")
                 .boardType(EBoardType.FREE)
+                .images(extractImageFrom(multipartFileList))
                 .build();
 
         Board fixture2 = Board.builder()
@@ -70,9 +77,23 @@ public class BoardFactory {
                 .title("title2")
                 .content("content2")
                 .boardType(EBoardType.NOTICE)
+                .images(extractImageFrom(multipartFileList))
                 .build();
 
         return List.of(fixture1, fixture2);
+    }
+
+    private static List<String> extractImageNameFrom(List<MultipartFile> multipartFileList) {
+        return multipartFileList.stream()
+                .map(MultipartFile::getName)
+                .collect(toList());
+    }
+
+    private static List<Image> extractImageFrom(List<MultipartFile> multipartFileList) {
+        List<Image> myFiles = extractImageNameFrom(multipartFileList).stream()
+                .map(Image::new)
+                .collect(toList());
+        return myFiles;
     }
 
 }

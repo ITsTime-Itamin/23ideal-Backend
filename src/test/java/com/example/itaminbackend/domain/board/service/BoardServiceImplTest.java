@@ -13,6 +13,7 @@ import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.domain.image.service.ImageService;
 import com.example.itaminbackend.domain.user.entity.User;
 import com.example.itaminbackend.global.config.security.util.SecurityUtils;
+import com.example.itaminbackend.global.dto.PaginationDto;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -22,11 +23,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Spy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.example.itaminbackend.domain.board.dto.BoardDto.*;
 import static java.util.stream.Collectors.toList;
@@ -100,10 +106,10 @@ class BoardServiceImplTest extends BaseTest {
         board.setImages(extractImageFrom(updateRequest));
         given(this.boardRepository.findNotDeletedByBoardId(anyLong())).willReturn(Optional.of(board));
         given(this.imageService.saveImages(updateRequest.getFiles())).willReturn(extractImageFrom(updateRequest));
-
         UpdateResponse response = UpdateResponse.builder()
                 .boardId(101L)
                 .build();
+
         // when
         UpdateResponse updateResponse = this.boardService.updateBoard(updateRequest);
 
@@ -134,23 +140,43 @@ class BoardServiceImplTest extends BaseTest {
         then(this.boardRepository).should().findNotDeletedByBoardId(anyLong());
     }
 
-//    @DisplayName("게시판 조회 테스트")
-//    @Test
-//    void getDetailBoardTest() {
-//        //given
-//        Board board = Board.builder()
-//                .boardId(101L)
-//                .isDeleted(false)
-//                .build();
-//        given(this.boardRepository.findNotDeletedByBoardId(anyLong())).willReturn(Optional.of(board));
-//
-//        //when
-//        GetDetailResponse detailBoard = this.boardService.getDetailBoard(board.getBoardId());
-//
-//        //then
-//        assertThat(deletedBoard.isDeleted()).isEqualTo(true);
-//        then(this.boardRepository).should().findNotDeletedByBoardId(anyLong());
-//    }
+    @DisplayName("게시판 조회 테스트")
+    @Test
+    void getDetailBoardTest() {
+        //given
+        Board board = BoardFactory.mockBoards().get(0);
+        given(this.boardRepository.findNotDeletedByBoardId(anyLong())).willReturn(Optional.of(board));
+
+        //when
+        GetDetailResponse detailBoardResponse = this.boardService.getDetailBoard(board.getBoardId());
+
+        //then
+        assertThat(detailBoardResponse)
+                .usingRecursiveComparison()
+                .isEqualTo(this.boardMapper.toGetDetailResponse(board));
+        then(this.boardRepository).should().findNotDeletedByBoardId(anyLong());
+    }
+
+    @DisplayName("게시판 작성 시간순 조회 테스트")
+    @Test
+    void getAllDetailBoardsTest() {
+        //given
+        Board board1 = BoardFactory.mockBoards().get(0);
+        Board board2 = BoardFactory.mockBoards().get(1);
+        GetAllResponse getAllResponse1 = new GetAllResponse(board1.getBoardId(), board1.getTitle(), board1.getContent(), board1.getCreatedDate(), board1.getImages().get(0).getImageKey());
+        GetAllResponse getAllResponse2 = new GetAllResponse(board2.getBoardId(), board2.getTitle(), board2.getContent(), board2.getCreatedDate(), board2.getImages().get(0).getImageKey());
+        Page<GetAllResponse> page = PageableExecutionUtils.getPage(List.of(getAllResponse1, getAllResponse2), PageRequest.of(0, 10), () -> 2);
+        PaginationDto<List<GetAllResponse>> data = PaginationDto.of(page, page.get().collect(toList()));
+        given(this.boardRepository.findAllDetailBoardsByCreatedDate(any())).willReturn(page);
+
+        //when
+        PaginationDto<List<GetAllResponse>> autual = this.boardService.getAllDetailBoards(PageRequest.of(0, 10));
+
+        //then
+        assertThat(autual)
+                .usingRecursiveComparison()
+                .isEqualTo(data);
+    }
 
     @DisplayName("존재하지 않는 boardId 요청시 예외를 발생한다.")
     @Test
