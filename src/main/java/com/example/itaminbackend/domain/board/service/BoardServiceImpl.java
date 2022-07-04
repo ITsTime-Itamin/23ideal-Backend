@@ -64,9 +64,10 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public void deleteBoard(Long boardId) {
+    public Board deleteBoard(Long boardId) {
         Board board = this.validateBoardId(boardId);
         board.setDeleted(true);
+        return board;
     }
 
     /**
@@ -95,7 +96,7 @@ public class BoardServiceImpl implements BoardService{
         return this.boardRepository.findNotDeletedByBoardId(boardId).orElseThrow(NotFoundBoardException::new);
     }
 
-    private void validateCreatedUser(Board board) {
+    public void validateCreatedUser(Board board) {
         if(!(board.getUser().getUserId().equals(SecurityUtils.getLoggedInUser().getUserId()))) throw new NotBoardWriterException();
     }
 

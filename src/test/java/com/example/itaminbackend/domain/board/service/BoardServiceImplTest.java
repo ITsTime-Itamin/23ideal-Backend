@@ -2,9 +2,11 @@ package com.example.itaminbackend.domain.board.service;
 
 import com.example.itaminbackend.BaseTest;
 import com.example.itaminbackend.common.factory.BoardFactory;
+import com.example.itaminbackend.common.factory.UserFactory;
 import com.example.itaminbackend.domain.board.dto.BoardMapper;
 import com.example.itaminbackend.domain.board.dto.BoardMapperSupport;
 import com.example.itaminbackend.domain.board.entity.Board;
+import com.example.itaminbackend.domain.board.exception.NotBoardWriterException;
 import com.example.itaminbackend.domain.board.exception.NotFoundBoardException;
 import com.example.itaminbackend.domain.board.repository.BoardRepository;
 import com.example.itaminbackend.domain.image.entity.Image;
@@ -76,12 +78,8 @@ class BoardServiceImplTest extends BaseTest {
     void createBoardTest() {
         //given
         CreateRequest createRequest = BoardFactory.mockCreateRequests().get(0);
-        Board board = Board.builder()
-                .boardId(1L)
-                .title("testTitle")
-                .content("testContent")
-                .images(extractImageFrom(createRequest))
-                .build();
+        Board board = BoardFactory.mockBoards().get(0);
+        board.setImages(extractImageFrom(createRequest));
         given(this.boardRepository.save(any(Board.class))).willReturn(board);
 
         // when
@@ -97,13 +95,9 @@ class BoardServiceImplTest extends BaseTest {
     void updateBoardTest() {
         //given
         UpdateRequest updateRequest = BoardFactory.mockUpdateRequests().get(0);
-        Board board = Board.builder()
-                .boardId(101L)
-                .title("testTitle")
-                .content("testContent")
-                .images(extractImageFrom(updateRequest))
-                .user(user)
-                .build();
+        Board board = BoardFactory.mockBoards().get(0);
+        board.setUser(user);
+        board.setImages(extractImageFrom(updateRequest));
         given(this.boardRepository.findNotDeletedByBoardId(anyLong())).willReturn(Optional.of(board));
         given(this.imageService.saveImages(updateRequest.getFiles())).willReturn(extractImageFrom(updateRequest));
 
@@ -122,15 +116,64 @@ class BoardServiceImplTest extends BaseTest {
         then(this.imageService).should().saveImages(updateRequest.getFiles());
     }
 
+    @DisplayName("게시판 삭제 테스트")
+    @Test
+    void deleteBoardTest() {
+        //given
+        Board board = Board.builder()
+                .boardId(101L)
+                .isDeleted(false)
+                .build();
+        given(this.boardRepository.findNotDeletedByBoardId(anyLong())).willReturn(Optional.of(board));
+
+        //when
+        Board deletedBoard = this.boardService.deleteBoard(board.getBoardId());
+
+        //then
+        assertThat(deletedBoard.isDeleted()).isEqualTo(true);
+        then(this.boardRepository).should().findNotDeletedByBoardId(anyLong());
+    }
+
+//    @DisplayName("게시판 조회 테스트")
+//    @Test
+//    void getDetailBoardTest() {
+//        //given
+//        Board board = Board.builder()
+//                .boardId(101L)
+//                .isDeleted(false)
+//                .build();
+//        given(this.boardRepository.findNotDeletedByBoardId(anyLong())).willReturn(Optional.of(board));
+//
+//        //when
+//        GetDetailResponse detailBoard = this.boardService.getDetailBoard(board.getBoardId());
+//
+//        //then
+//        assertThat(deletedBoard.isDeleted()).isEqualTo(true);
+//        then(this.boardRepository).should().findNotDeletedByBoardId(anyLong());
+//    }
+
     @DisplayName("존재하지 않는 boardId 요청시 예외를 발생한다.")
     @Test
-    void validateBoardIdTest(){
+    void notFoundBoardExceptionTest(){
         //given
         given(this.boardRepository.findNotDeletedByBoardId(any())).willReturn(Optional.empty());
 
         //when, then
         assertThatThrownBy(() -> this.boardService.validateBoardId(anyLong()))
                 .isInstanceOf(NotFoundBoardException.class);
+    }
+
+    @DisplayName("해당 게시판을 작성한 유저가 아닐 때 예외를 발생한다.")
+    @Test
+    void notBoardWriterExceptionTest(){
+        //given
+        Board board = Board.builder()
+                .boardId(101L)
+                .user(UserFactory.mockUsers().get(0))
+                .build();
+        //when, then
+        assertThatThrownBy(() -> this.boardService.validateCreatedUser(board))
+                .isInstanceOf(NotBoardWriterException.class);
     }
 
     private List<Image> extractImageFrom(CreateRequest createRequest) {

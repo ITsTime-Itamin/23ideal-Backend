@@ -1,5 +1,7 @@
 package com.example.itaminbackend.common.factory;
 
+import com.example.itaminbackend.domain.board.entity.Board;
+import com.example.itaminbackend.domain.user.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -54,4 +56,23 @@ public class BoardFactory {
                 .build();
         return List.of(fixture1, fixture2);
     }
+
+    public static List<Board> mockBoards(){
+        Board fixture1 = Board.builder()
+                .boardId(101L)
+                .title("title1")
+                .content("content1")
+                .boardType(EBoardType.FREE)
+                .build();
+
+        Board fixture2 = Board.builder()
+                .boardId(102L)
+                .title("title2")
+                .content("content2")
+                .boardType(EBoardType.NOTICE)
+                .build();
+
+        return List.of(fixture1, fixture2);
+    }
+
 }
