@@ -33,7 +33,7 @@ public class ScrapRepositoryImpl implements ScrapRepositoryCustom{
         return Optional.ofNullable(queryFactory.selectFrom(scrap)
                 .from(scrap)
                 .where(boardEq(board),
-                        isDeletedCheck())
+                        isDeletedCheckOfScrap())
                 .fetchCount());
     }
 
@@ -43,7 +43,7 @@ public class ScrapRepositoryImpl implements ScrapRepositoryCustom{
                 .from(scrap)
                 .where(boardEq(board),
                         userEq(user),
-                        isDeletedCheck())
+                        isDeletedCheckOfScrap())
                 .fetchOne());
     }
 
@@ -57,6 +57,7 @@ public class ScrapRepositoryImpl implements ScrapRepositoryCustom{
                         scrapCount.sum()
                 ))
                 .from(board)
+                .where(isDeletedCheckOfBoard())
                 .leftJoin(board.scraps, scrap)
                 .orderBy(scrapCount.sum().desc())
                 .groupBy(board.boardId)
@@ -72,6 +73,7 @@ public class ScrapRepositoryImpl implements ScrapRepositoryCustom{
                         scrapCount.sum()
                 ))
                 .from(board)
+                .where(isDeletedCheckOfBoard())
                 .leftJoin(board.scraps, scrap)
                 .orderBy(scrapCount.sum().desc())
                 .groupBy(board.boardId);
@@ -81,8 +83,8 @@ public class ScrapRepositoryImpl implements ScrapRepositoryCustom{
             when(false).then(new Long(1)).
             otherwise(new Long(0));
 
-    private BooleanExpression isDeletedCheck() {return scrap.isDeleted.eq(false);}
-
+    private BooleanExpression isDeletedCheckOfScrap() {return scrap.isDeleted.eq(false);}
+    private BooleanExpression isDeletedCheckOfBoard() {return board.isDeleted.eq(false);}
     private BooleanExpression boardEq(Board board) {return board != null ? scrap.board.eq(board) : null;}
     private BooleanExpression userEq(User user) {return user != null ? scrap.user.eq(user) : null;}
 }
