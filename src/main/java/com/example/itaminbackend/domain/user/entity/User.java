@@ -1,6 +1,7 @@
 package com.example.itaminbackend.domain.user.entity;
 
 import com.example.itaminbackend.domain.board.entity.Board;
+import com.example.itaminbackend.domain.comment.entity.Comment;
 import com.example.itaminbackend.domain.scrap.entity.Scrap;
 import com.example.itaminbackend.domain.user.constant.UserConstants;
 import com.example.itaminbackend.domain.user.constant.UserConstants.Role;
@@ -23,6 +24,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long userId;
 
     @Column
@@ -70,6 +72,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Scrap> scraps = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments = new ArrayList<>();
 
     public void setBoards(Board board){
         this.boards.add(board);

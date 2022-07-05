@@ -2,10 +2,7 @@ package com.example.itaminbackend.domain.rentalhouse.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -17,6 +14,7 @@ public class PublicRentalHouse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "public_rental_house_id")
     private Long publicRentalHouseId;
     private Integer hsmpSn;
     private String insttNm;

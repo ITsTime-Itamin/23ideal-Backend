@@ -17,6 +17,7 @@ public class Scrap {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "scrap_id")
     private Long scrapId;
 
     private boolean isDeleted;
