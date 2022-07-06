@@ -4,6 +4,8 @@ import com.example.itaminbackend.domain.user.constant.UserConstants.EToken;
 import com.example.itaminbackend.domain.user.dto.LoginRequest;
 import com.example.itaminbackend.domain.user.dto.LoginResponse;
 import com.example.itaminbackend.domain.user.dto.UserDto;
+import com.example.itaminbackend.domain.user.dto.UserDto.GoogleLoginRequest;
+import com.example.itaminbackend.domain.user.dto.UserDto.NaverLoginRequest;
 import com.example.itaminbackend.domain.user.entity.User;
 import com.example.itaminbackend.domain.user.exception.NotFoundEmailException;
 import com.example.itaminbackend.domain.user.repository.UserRepository;
@@ -27,6 +29,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -115,7 +121,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDto.GoogleLoginRequest providegoogleJWTToken(User user){
+    public GoogleLoginRequest providegoogleJWTToken(User user){
 
         //Header 부분 설정
         Map<String, Object> headers = new HashMap<>();
@@ -147,12 +153,12 @@ public class UserServiceImpl implements UserService {
                 .compact(); // 토큰 생성
         log.info(jwt);
 
-        UserDto.GoogleLoginRequest googleLoginRequest = new UserDto.GoogleLoginRequest();
+        GoogleLoginRequest googleLoginRequest = new GoogleLoginRequest();
         googleLoginRequest.setToken(jwt);
         return googleLoginRequest;
     }
 
-    public UserDto.NaverLoginRequest providenaverJWTToken(User user){
+    public NaverLoginRequest providenaverJWTToken(User user){
 
         //Header 부분 설정
         Map<String, Object> headers = new HashMap<>();
@@ -177,13 +183,13 @@ public class UserServiceImpl implements UserService {
                 .signWith(SignatureAlgorithm.HS256, key.getBytes()) // HS256과 Key로 Sign
                 .compact(); // 토큰 생성
 
-        UserDto.NaverLoginRequest naverLoginRequest = new UserDto.NaverLoginRequest();
+        NaverLoginRequest naverLoginRequest = new NaverLoginRequest();
         naverLoginRequest.setToken(jwt);
         return naverLoginRequest;
     }
 
     @Override
-    public UserDto.GoogleLoginRequest authGoogleUser(UserDto.GoogleLoginRequest googleLoginRequest){
+    public GoogleLoginRequest authGoogleUser(GoogleLoginRequest googleLoginRequest){
         String tokenId = googleLoginRequest.getToken(); // test받는 식으로 받던가 tokenId받는 식으로 받던가임
         log.info(tokenId);
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
@@ -234,7 +240,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto.NaverLoginRequest authNaverUser(UserDto.NaverLoginRequest naverLoginRequest) throws IOException {
+    public NaverLoginRequest authNaverUser(NaverLoginRequest naverLoginRequest) throws IOException {
         String token = naverLoginRequest.getToken();
         String header = "Bearer " + token; // Bearer 다음에 공백 추가
 
@@ -268,6 +274,13 @@ public class UserServiceImpl implements UserService {
         User user=new User(name,email,pictureUrl,emailVerified);
 
         saveOrUpdate(user);
+//        OAuth2User userDetails = new DefaultOAuth2User(authorities, memberAttribute, ENaverUser.eNaverKeyAttribute.getValue());
+//        OAuth2AuthenticationToken auth = new OAuth2AuthenticationToken(userDetails, authorities, ENaverUser.eNaverKeyAttribute.getValue());
+//        auth.setDetails(userDetails);
+//        SecurityContextHolder.getContext().setAuthentication(auth);
+//        TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth);
+//        OAuth2LoginAuthenticationFilter oAuth2LoginAuthenticationFilter = new OAuth2LoginAuthenticationFilter();
+
         return providenaverJWTToken(user);
     }
 
