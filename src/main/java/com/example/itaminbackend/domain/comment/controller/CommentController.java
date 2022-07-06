@@ -1,7 +1,6 @@
 package com.example.itaminbackend.domain.comment.controller;
 
 import com.example.itaminbackend.domain.comment.constant.CommentConstants.ECommentResponseMessage;
-import com.example.itaminbackend.domain.comment.dto.CommentDto;
 import com.example.itaminbackend.domain.comment.dto.CommentDto.CreateRequest;
 import com.example.itaminbackend.domain.comment.dto.CommentDto.CreateResponse;
 import com.example.itaminbackend.domain.comment.dto.CommentDto.DeleteRequest;

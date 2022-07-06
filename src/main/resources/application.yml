@@ -122,6 +122,8 @@ spring:
     username: ENC(fpnzm6OeJF3hBCULOgeh0w==)
     password: ENC(fpnzm6OeJF3hBCULOgeh0w==)
     driver-class-name: com.mysql.cj.jdbc.Driver
+    initialize: true
+    initialization-mode: always
   servlet:
     multipart:
       max-file-size: 10MB
@@ -134,6 +136,7 @@ spring:
         show_sql: true
         format_sql: true
     database-platform: org.hibernate.dialect.MySQL5Dialect
+    defer-datasource-initialization: true
   data:
     web:
       pageable:

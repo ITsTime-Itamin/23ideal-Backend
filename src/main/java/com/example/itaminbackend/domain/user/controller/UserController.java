@@ -5,6 +5,8 @@ import com.example.itaminbackend.domain.user.constant.UserConstants.EUserRespons
 import com.example.itaminbackend.domain.user.dto.LoginRequest;
 import com.example.itaminbackend.domain.user.dto.LoginResponse;
 import com.example.itaminbackend.domain.user.dto.UserDto;
+import com.example.itaminbackend.domain.user.dto.UserDto.GoogleLoginRequest;
+import com.example.itaminbackend.domain.user.dto.UserDto.NaverLoginRequest;
 import com.example.itaminbackend.domain.user.service.UserService;
 import com.example.itaminbackend.global.dto.ResponseDto;
 import io.swagger.annotations.ApiOperation;
@@ -27,13 +29,13 @@ public class UserController {
 
     @ApiOperation(value = "구글 로그인", notes = "구글 로그인을 합니다.")
     @PostMapping("/googleLogin")
-    public ResponseEntity<ResponseDto<UserDto.GoogleLoginRequest>> googleLogin(@Valid @ModelAttribute UserDto.GoogleLoginRequest googleLoginRequest){
+    public ResponseEntity<ResponseDto<GoogleLoginRequest>> googleLogin(@Valid @ModelAttribute GoogleLoginRequest googleLoginRequest){
         return ResponseEntity.ok(ResponseDto.create(EUserResponseMessage.GOOGLELOGIN_SUCCESS.getMessage(), this.userService.authGoogleUser(googleLoginRequest)));
     }
 
     @ApiOperation(value = "네이버 로그인", notes = "네이버 로그인을 합니다.")
     @PostMapping("/naverLogin")
-    public ResponseEntity<ResponseDto<UserDto.NaverLoginRequest>> naverLogin(@Valid @ModelAttribute UserDto.NaverLoginRequest naverLoginRequest) throws IOException {
+    public ResponseEntity<ResponseDto<NaverLoginRequest>> naverLogin(@Valid @ModelAttribute NaverLoginRequest naverLoginRequest) throws IOException {
         return ResponseEntity.ok(ResponseDto.create(EUserResponseMessage.NAVERLOGIN_SUCCES.getMessage(), this.userService.authNaverUser(naverLoginRequest)));
     }
 
