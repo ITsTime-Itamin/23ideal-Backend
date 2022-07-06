@@ -1,5 +1,6 @@
 package com.example.itaminbackend.domain.comment.dto;
 
+import com.example.itaminbackend.domain.board.entity.Board;
 import com.example.itaminbackend.domain.comment.dto.CommentDto.CreateRequest;
 import com.example.itaminbackend.domain.comment.dto.CommentDto.CreateResponse;
 import com.example.itaminbackend.domain.comment.entity.Comment;
@@ -10,8 +11,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = CommentMapperSupport.class, imports = SecurityUtils.class)
 public interface CommentMapper {
 
-    @Mapping(target = "content", source = "createRequest.content")
-    @Mapping(target = "board", source = "createRequest.boardId", qualifiedByName = "getBoard")
+    @Mapping(target = "content", source = "content")
+    @Mapping(target = "board", source = "boardId", qualifiedByName = "getBoard")
     @Mapping(target = "user", expression = "java(SecurityUtils.getLoggedInUser())")
     Comment toEntity(CreateRequest createRequest);
 

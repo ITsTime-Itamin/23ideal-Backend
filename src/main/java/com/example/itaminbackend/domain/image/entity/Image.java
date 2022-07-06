@@ -17,7 +17,6 @@ public class Image extends BaseTimeEntity {
     @Setter(value = AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "image_id")
     private Long imageId;
     private String imageKey;
 
