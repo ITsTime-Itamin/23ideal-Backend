@@ -11,6 +11,7 @@ import com.example.itaminbackend.domain.board.entity.Board;
 import com.example.itaminbackend.domain.board.exception.NotBoardWriterException;
 import com.example.itaminbackend.domain.board.exception.NotFoundBoardException;
 import com.example.itaminbackend.domain.board.repository.BoardRepository;
+import com.example.itaminbackend.domain.comment.service.CommentService;
 import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.domain.image.service.ImageService;
 import com.example.itaminbackend.global.config.security.util.SecurityUtils;

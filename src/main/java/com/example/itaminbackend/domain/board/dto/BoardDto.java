@@ -2,6 +2,8 @@ package com.example.itaminbackend.domain.board.dto;
 
 import com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardType;
 import com.example.itaminbackend.domain.board.entity.Board;
+import com.example.itaminbackend.domain.comment.dto.CommentDto;
+import com.example.itaminbackend.domain.comment.dto.CommentDto.GetResponse;
 import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.global.util.Enum;
 import com.querydsl.core.annotations.QueryProjection;
@@ -105,7 +107,9 @@ public abstract class BoardDto {
         private String content;
         private String boardType;
         private LocalDateTime createdDate;
+        private LocalDateTime deadLineDate;
         private List<String> imageKeys;
+        private String userName;
     }
 
     @Getter
@@ -117,14 +121,16 @@ public abstract class BoardDto {
         private String content;
         private LocalDateTime createdDate;
         private String imageKey;
+        private String userName;
 
         @QueryProjection
-        public GetAllResponse(Long boardId, String title, String content, LocalDateTime createdDate, String imageKey) {
+        public GetAllResponse(Long boardId, String title, String content, LocalDateTime createdDate, String imageKey, String userName) {
             this.boardId = boardId;
             this.title = title;
             this.content = content;
             this.createdDate = createdDate;
             this.imageKey = imageKey;
+            this.userName = userName;
         }
     }
 

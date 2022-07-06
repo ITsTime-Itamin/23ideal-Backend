@@ -6,6 +6,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 
 import static com.example.itaminbackend.domain.board.entity.QBoard.board;
@@ -25,6 +26,18 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom{
                 .where(boardIdEq(commentId),
                         isDeletedCheck())
                 .fetchFirst());
+    }
+
+    @Override
+    public List<Comment> findAllCommentsByBoardId(Long boardId) {
+        return queryFactory.selectFrom(comment)
+                .leftJoin(comment.parent)
+                .fetchJoin()
+                .where(comment.board.boardId.eq(boardId))
+                .orderBy(
+                        comment.parent.commentId.asc().nullsFirst(),
+                        comment.createdDate.asc()
+                ).fetch();
     }
 
     private BooleanExpression isDeletedCheck() {

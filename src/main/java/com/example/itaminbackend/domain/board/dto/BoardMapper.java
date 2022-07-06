@@ -3,13 +3,14 @@ package com.example.itaminbackend.domain.board.dto;
 import com.example.itaminbackend.domain.board.dto.BoardDto.CreateRequest;
 import com.example.itaminbackend.domain.board.dto.BoardDto.CreateResponse;
 import com.example.itaminbackend.domain.board.entity.Board;
-import com.example.itaminbackend.domain.user.entity.User;
+import com.example.itaminbackend.domain.comment.dto.CommentDto;
+import com.example.itaminbackend.domain.comment.dto.CommentDto.GetResponse;
+import com.example.itaminbackend.domain.comment.entity.Comment;
 import com.example.itaminbackend.global.config.security.util.SecurityUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import javax.transaction.Transactional;
-import java.util.Optional;
+import java.util.List;
 
 import static com.example.itaminbackend.domain.board.dto.BoardDto.*;
 
@@ -35,7 +36,9 @@ public interface BoardMapper{
     @Mapping(target = "content", source = "content")
     @Mapping(target = "boardType", source = "boardType")
     @Mapping(target = "createdDate", source = "createdDate")
+    @Mapping(target = "deadLineDate", source = "deadLineDate")
     @Mapping(target = "imageKeys", source = "images", qualifiedByName = "getImageKeys")
+    @Mapping(target = "userName", source = "board.user.name")
     GetDetailResponse toGetDetailResponse(Board board);
 
 }

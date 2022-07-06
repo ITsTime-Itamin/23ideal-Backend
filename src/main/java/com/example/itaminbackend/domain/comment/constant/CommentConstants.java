@@ -9,7 +9,9 @@ public class CommentConstants {
     @Getter
     @RequiredArgsConstructor
     public enum ECommentResponseMessage{
-        CREATE_COMMENT_SUCCESS("댓글을 작성했습니다.");
+        CREATE_COMMENT_SUCCESS("댓글을 작성했습니다."),
+        DELETE_COMMENT_SUCCESS("댓글을 삭제했습니다."),
+        GET_ALL_DETAIL_COMMENTS_SUCCESS("게시판의 모든 댓글을 조회했습니다.");
         private final String message;
     }
 

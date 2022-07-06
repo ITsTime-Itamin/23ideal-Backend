@@ -20,6 +20,7 @@ public class BoardMapperSupport {
 
     @Named("saveImages")
     public List<Image> saveImages(List<MultipartFile> files) throws IOException {
+        System.out.println("세이브들어오는지");
         return this.imageService.saveImages(files);
     }
 

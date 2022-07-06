@@ -16,6 +16,7 @@ import java.util.Optional;
 import static com.example.itaminbackend.domain.board.dto.BoardDto.GetAllResponse;
 import static com.example.itaminbackend.domain.board.entity.QBoard.board;
 import static com.example.itaminbackend.domain.image.entity.QImage.image;
+import static com.example.itaminbackend.domain.user.entity.QUser.user;
 
 public class BoardRepositoryImpl implements BoardRepositoryCustom{
 
@@ -40,9 +41,11 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
                         board.title,
                         board.content,
                         board.createdDate,
-                        image.imageKey))
+                        image.imageKey,
+                        user.name))
                 .from(board)
                 .leftJoin(board.images, image)
+                .leftJoin(board.user, user)
                 .where(isDeletedCheck())
                 .orderBy(board.createdDate.desc())
                 .groupBy(board.boardId)
@@ -55,9 +58,11 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
                         board.title,
                         board.content,
                         board.createdDate,
-                        image.imageKey))
+                        image.imageKey,
+                        user.name))
                 .from(board)
                 .leftJoin(board.images, image)
+                .leftJoin(board.user, user)
                 .where(isDeletedCheck())
                 .orderBy(board.createdDate.desc())
                 .groupBy(board.boardId);

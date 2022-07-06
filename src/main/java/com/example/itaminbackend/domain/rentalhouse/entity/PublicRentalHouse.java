@@ -14,7 +14,6 @@ public class PublicRentalHouse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "public_rental_house_id")
     private Long publicRentalHouseId;
     private Integer hsmpSn;
     private String insttNm;
