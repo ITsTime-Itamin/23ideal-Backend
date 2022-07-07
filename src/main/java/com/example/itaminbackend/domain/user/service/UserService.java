@@ -14,10 +14,10 @@ public interface UserService {
     User validateEmail(String email);
 
     GoogleLoginRequest authGoogleUser(GoogleLoginRequest googleLoginRequest);
-    UserDto.NaverLoginRequest authNaverUser(UserDto.NaverLoginRequest naverLoginRequest) throws IOException;
+    LoginResponse authNaverUser(UserDto.NaverLoginRequest naverLoginRequest) throws IOException;
 
     User saveOrUpdate(User user);
     GoogleLoginRequest providegoogleJWTToken(User user);
-
-    UserDto.NaverLoginRequest providenaverJWTToken(User user);
+//
+//    UserDto.NaverLoginRequest providenaverJWTToken(User user);
 }
