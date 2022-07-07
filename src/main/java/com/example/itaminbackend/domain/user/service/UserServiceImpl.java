@@ -1,5 +1,6 @@
 package com.example.itaminbackend.domain.user.service;
 
+import com.example.itaminbackend.domain.user.constant.UserConstants;
 import com.example.itaminbackend.domain.user.constant.UserConstants.EToken;
 import com.example.itaminbackend.domain.user.dto.LoginRequest;
 import com.example.itaminbackend.domain.user.dto.LoginResponse;
@@ -27,6 +28,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -42,10 +45,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+
+import static com.example.itaminbackend.domain.user.constant.UserConstants.Role.ROLE_USER;
 
 @RequiredArgsConstructor
 @Service
@@ -157,36 +160,36 @@ public class UserServiceImpl implements UserService {
         googleLoginRequest.setToken(jwt);
         return googleLoginRequest;
     }
-
-    public NaverLoginRequest providenaverJWTToken(User user){
-
-        //Header 부분 설정
-        Map<String, Object> headers = new HashMap<>();
-        headers.put("typ", "JWT");
-        headers.put("alg", "HS256");
-        //헤더에는 jwt의 암호화 방법 정보가 들어있다.
-
-        //payload 부분 설정
-        String email=user.getEmail();
-        String imageUrl=user.getImageUrl();
-        String name=user.getName();
-        Map<String, Object> payloads = new HashMap<>();
-        payloads.put("email", email);
-        payloads.put("imageUrl", imageUrl);
-        payloads.put("name", name);
-        //실제적인 jwt의 데이터를 담당하는 부분이다.
-
-        // 토큰 Builder
-        String jwt = Jwts.builder()
-                .setHeader(headers) // Headers 설정
-                .setClaims(payloads) // Claims 설정
-                .signWith(SignatureAlgorithm.HS256, key.getBytes()) // HS256과 Key로 Sign
-                .compact(); // 토큰 생성
-
-        NaverLoginRequest naverLoginRequest = new NaverLoginRequest();
-        naverLoginRequest.setToken(jwt);
-        return naverLoginRequest;
-    }
+//
+//    public NaverLoginRequest providenaverJWTToken(User user){
+//
+//        //Header 부분 설정
+//        Map<String, Object> headers = new HashMap<>();
+//        headers.put("typ", "JWT");
+//        headers.put("alg", "HS256");
+//        //헤더에는 jwt의 암호화 방법 정보가 들어있다.
+//
+//        //payload 부분 설정
+//        String email=user.getEmail();
+//        String imageUrl=user.getImageUrl();
+//        String name=user.getName();
+//        Map<String, Object> payloads = new HashMap<>();
+//        payloads.put("email", email);
+//        payloads.put("imageUrl", imageUrl);
+//        payloads.put("name", name);
+//        //실제적인 jwt의 데이터를 담당하는 부분이다.
+//
+//        // 토큰 Builder
+//        String jwt = Jwts.builder()
+//                .setHeader(headers) // Headers 설정
+//                .setClaims(payloads) // Claims 설정
+//                .signWith(SignatureAlgorithm.HS256, key.getBytes()) // HS256과 Key로 Sign
+//                .compact(); // 토큰 생성
+//
+//        NaverLoginRequest naverLoginRequest = new NaverLoginRequest();
+//        naverLoginRequest.setToken(jwt);
+//        return naverLoginRequest;
+//    }
 
     @Override
     public GoogleLoginRequest authGoogleUser(GoogleLoginRequest googleLoginRequest){
@@ -224,7 +227,6 @@ public class UserServiceImpl implements UserService {
 
 
                 saveOrUpdate(user);
-
                 return providegoogleJWTToken(user);
 
             } else {
@@ -240,7 +242,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public NaverLoginRequest authNaverUser(NaverLoginRequest naverLoginRequest) throws IOException {
+    public LoginResponse authNaverUser(NaverLoginRequest naverLoginRequest) throws IOException {
         String token = naverLoginRequest.getToken();
         String header = "Bearer " + token; // Bearer 다음에 공백 추가
 
@@ -259,14 +261,14 @@ public class UserServiceImpl implements UserService {
 
         Map map2= mapper.readValue(responseBody,Map.class);
 
-        Map map3= (Map) map2.get("response");
+        Map userMap= (Map) map2.get("response");
 
 
-        String email=map3.get("email").toString();
+        String email=userMap.get("email").toString();
         log.info(email);
-        String name=map3.get("name").toString();
+        String name=userMap.get("name").toString();
         log.info(name);
-        String pictureUrl=map3.get("profile_image").toString();
+        String pictureUrl=userMap.get("profile_image").toString();
         log.info(pictureUrl);
 
         Boolean emailVerified=true;
@@ -274,14 +276,17 @@ public class UserServiceImpl implements UserService {
         User user=new User(name,email,pictureUrl,emailVerified);
 
         saveOrUpdate(user);
-//        OAuth2User userDetails = new DefaultOAuth2User(authorities, memberAttribute, ENaverUser.eNaverKeyAttribute.getValue());
-//        OAuth2AuthenticationToken auth = new OAuth2AuthenticationToken(userDetails, authorities, ENaverUser.eNaverKeyAttribute.getValue());
-//        auth.setDetails(userDetails);
-//        SecurityContextHolder.getContext().setAuthentication(auth);
-//        TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth);
-//        OAuth2LoginAuthenticationFilter oAuth2LoginAuthenticationFilter = new OAuth2LoginAuthenticationFilter();
-
-        return providenaverJWTToken(user);
+        /**
+         * Spring Security by jungwoo
+         */
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority(String.valueOf(ROLE_USER)));
+        OAuth2User userDetails = new DefaultOAuth2User(authorities, userMap, "email");
+        OAuth2AuthenticationToken auth = new OAuth2AuthenticationToken(userDetails, authorities, "email");
+        auth.setDetails(userDetails);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth);
+        return LoginResponse.from(tokenInfoResponse);
     }
 
 
