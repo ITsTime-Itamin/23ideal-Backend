@@ -9,6 +9,7 @@ import com.example.itaminbackend.global.util.Enum;
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.Info;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -53,6 +54,7 @@ public abstract class BoardDto {
     @Getter
     @AllArgsConstructor
     @ApiModel(description = "게시판 등록을 위한 응답 객체")
+    @Builder
     public static class CreateResponse {
         private Long boardId;
     }

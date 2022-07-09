@@ -1,5 +1,8 @@
 package com.example.itaminbackend.common.factory;
 
+import com.example.itaminbackend.domain.board.dto.BoardDto;
+import com.example.itaminbackend.domain.board.dto.BoardDto.CreateResponse;
+import com.example.itaminbackend.domain.board.dto.BoardDto.UpdateResponse;
 import com.example.itaminbackend.domain.board.entity.Board;
 import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.domain.user.entity.User;
@@ -41,6 +44,13 @@ public class BoardFactory {
         return List.of(fixture1, fixture2);
     }
 
+    public static List<CreateResponse> mockCreateResponses() {
+        CreateResponse fixture1 = CreateResponse.builder()
+                .boardId(1L)
+                .build();
+        return List.of(fixture1);
+    }
+
     public static List<UpdateRequest> mockUpdateRequests() {
         List<MultipartFile> images = List.of(FileFactory.getTestImage1(), FileFactory.getTestImage2());
         UpdateRequest fixture1 = UpdateRequest.builder()
@@ -59,6 +69,13 @@ public class BoardFactory {
                 .files(images)
                 .build();
         return List.of(fixture1, fixture2);
+    }
+
+    public static List<UpdateResponse> mockUpdateResponses() {
+        UpdateResponse fixture1 = UpdateResponse.builder()
+                .boardId(1L)
+                .build();
+        return List.of(fixture1);
     }
 
     public static List<Board> mockBoards(){
