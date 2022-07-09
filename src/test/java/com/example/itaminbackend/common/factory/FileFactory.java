@@ -12,7 +12,7 @@ import java.util.Objects;
 public class FileFactory {
 
     private static final ClassLoader CLASS_LOADER = FileFactory.class.getClassLoader();
-    private static final String FILE_KEY = "images";
+    private static final String FILE_KEY = "files";
 
     public static MockMultipartFile getTestImage1() {
         return createImageFile("testImage1.png");
@@ -53,7 +53,7 @@ public class FileFactory {
 
     private static MockMultipartFile createEmptyImageFile() {
         return new MockMultipartFile(
-                "images",
+                "files",
                 "",
                 null,
                 new byte[] {}

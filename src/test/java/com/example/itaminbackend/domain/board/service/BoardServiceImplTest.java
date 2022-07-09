@@ -76,9 +76,9 @@ class BoardServiceImplTest extends BaseTest {
         securityUtilsMock.close();
     }
 
-    @DisplayName("게시판 작성 테스트")
+    @DisplayName("게시판 작성 테스트 - 성공")
     @Test
-    void createBoardTest() {
+    void createBoardTest_success() {
         //given
         CreateRequest createRequest = BoardFactory.mockCreateRequests().get(0);
         Board board = BoardFactory.mockBoards().get(0);
@@ -93,7 +93,7 @@ class BoardServiceImplTest extends BaseTest {
         then(this.boardRepository).should().save(any(Board.class));
     }
 
-    @DisplayName("게시판 수정 테스트")
+    @DisplayName("게시판 수정 테스트 - 성공")
     @Test
     void updateBoardTest() {
         //given
@@ -119,9 +119,9 @@ class BoardServiceImplTest extends BaseTest {
         then(this.imageService).should().saveImages(updateRequest.getFiles());
     }
 
-    @DisplayName("게시판 삭제 테스트")
+    @DisplayName("게시판 삭제 테스트 - 성공")
     @Test
-    void deleteBoardTest() {
+    void deleteBoardTest_success() {
         //given
         Board board = Board.builder()
                 .boardId(101L)
@@ -137,43 +137,44 @@ class BoardServiceImplTest extends BaseTest {
         then(this.boardRepository).should().findNotDeletedByBoardId(anyLong());
     }
 
-//    @DisplayName("게시판 조회 테스트")
-//    @Test
-//    void getDetailBoardTest() {
-//        //given
-//        Board board = BoardFactory.mockBoards().get(0);
-//        given(this.boardRepository.findNotDeletedByBoardId(anyLong())).willReturn(Optional.of(board));
-//
-//        //when
-//        GetDetailResponse detailBoardResponse = this.boardService.getDetailBoard(board.getBoardId());
-//
-//        //then
-//        assertThat(detailBoardResponse)
-//                .usingRecursiveComparison()
-//                .isEqualTo(this.boardMapper.toGetDetailResponse(board, this.commentService.getAllCommentsByBoardId(boardId)));
-//        then(this.boardRepository).should().findNotDeletedByBoardId(anyLong());
-//    }
+    @DisplayName("게시판 조회 테스트 - 성공")
+    @Test
+    void getDetailBoardTest_success() {
+        //given
+        Board board = BoardFactory.mockBoards().get(0);
+        board.setUser(user);
+        given(this.boardRepository.findNotDeletedByBoardId(anyLong())).willReturn(Optional.of(board));
 
-//    @DisplayName("게시판 작성 시간순 조회 테스트")
-//    @Test
-//    void getAllDetailBoardsTest() {
-//        //given
-//        Board board1 = BoardFactory.mockBoards().get(0);
-//        Board board2 = BoardFactory.mockBoards().get(1);
-//        GetAllResponse getAllResponse1 = new GetAllResponse(board1.getBoardId(), board1.getTitle(), board1.getContent(), board1.getCreatedDate(), board1.getImages().get(0).getImageKey());
-//        GetAllResponse getAllResponse2 = new GetAllResponse(board2.getBoardId(), board2.getTitle(), board2.getContent(), board2.getCreatedDate(), board2.getImages().get(0).getImageKey());
-//        Page<GetAllResponse> page = PageableExecutionUtils.getPage(List.of(getAllResponse1, getAllResponse2), PageRequest.of(0, 10), () -> 2);
-//        PaginationDto<List<GetAllResponse>> data = PaginationDto.of(page, page.get().collect(toList()));
-//        given(this.boardRepository.findAllDetailBoardsByCreatedDate(any())).willReturn(page);
-//
-//        //when
-//        PaginationDto<List<GetAllResponse>> autual = this.boardService.getAllDetailBoards(PageRequest.of(0, 10));
-//
-//        //then
-//        assertThat(autual)
-//                .usingRecursiveComparison()
-//                .isEqualTo(data);
-//    }
+        //when
+        GetDetailResponse detailBoardResponse = this.boardService.getDetailBoard(board.getBoardId());
+
+        //then
+        assertThat(detailBoardResponse)
+                .usingRecursiveComparison()
+                .isEqualTo(this.boardMapper.toGetDetailResponse(board));
+        then(this.boardRepository).should().findNotDeletedByBoardId(anyLong());
+    }
+
+    @DisplayName("게시판 작성 시간순 조회 테스트 - 성공")
+    @Test
+    void getAllDetailBoardsTest_success() {
+        //given
+        Board board1 = BoardFactory.mockBoards().get(0);
+        Board board2 = BoardFactory.mockBoards().get(1);
+        GetAllResponse getAllResponse1 = new GetAllResponse(board1.getBoardId(), board1.getTitle(), board1.getContent(), board1.getCreatedDate(), board1.getImages().get(0).getImageKey(), user.getName());
+        GetAllResponse getAllResponse2 = new GetAllResponse(board2.getBoardId(), board2.getTitle(), board2.getContent(), board2.getCreatedDate(), board2.getImages().get(0).getImageKey(), user.getName());
+        Page<GetAllResponse> page = PageableExecutionUtils.getPage(List.of(getAllResponse1, getAllResponse2), PageRequest.of(0, 10), () -> 2);
+        PaginationDto<List<GetAllResponse>> data = PaginationDto.of(page, page.get().collect(toList()));
+        given(this.boardRepository.findAllDetailBoardsByCreatedDate(any())).willReturn(page);
+
+        //when
+        PaginationDto<List<GetAllResponse>> autual = this.boardService.getAllDetailBoards(PageRequest.of(0, 10));
+
+        //then
+        assertThat(autual)
+                .usingRecursiveComparison()
+                .isEqualTo(data);
+    }
 
     @DisplayName("존재하지 않는 boardId 요청시 예외를 발생한다.")
     @Test

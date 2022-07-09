@@ -46,7 +46,7 @@ public class BoardController {
     }
 
     @ApiOperation(value = "게시판 수정", notes = "게시판 글을 수정합니다.")
-    @PutMapping
+    @PostMapping("/update")
     public ResponseEntity<ResponseDto<UpdateResponse>> updateBoard(@Valid @ModelAttribute UpdateRequest updateRequest){
         return ResponseEntity.ok(ResponseDto.create(EBoardResponseMessage.UPDATE_BOARD_SUCCESS.getMessage(), this.boardService.updateBoard(updateRequest)));
     }
