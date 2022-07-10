@@ -2,6 +2,7 @@ package com.example.itaminbackend.common.factory;
 
 import com.example.itaminbackend.domain.board.dto.BoardDto;
 import com.example.itaminbackend.domain.board.dto.BoardDto.CreateResponse;
+import com.example.itaminbackend.domain.board.dto.BoardDto.GetDetailResponse;
 import com.example.itaminbackend.domain.board.dto.BoardDto.UpdateResponse;
 import com.example.itaminbackend.domain.board.entity.Board;
 import com.example.itaminbackend.domain.image.entity.Image;
@@ -74,6 +75,23 @@ public class BoardFactory {
     public static List<UpdateResponse> mockUpdateResponses() {
         UpdateResponse fixture1 = UpdateResponse.builder()
                 .boardId(1L)
+                .build();
+        return List.of(fixture1);
+    }
+
+    public static List<GetDetailResponse> mockDetailResponses() {
+        List<MultipartFile> multipartFileList = List.of(FileFactory.getTestImage1(), FileFactory.getTestImage2());
+        multipartFileList.get(0).getOriginalFilename();
+        GetDetailResponse fixture1 = GetDetailResponse.builder()
+                .boardId(1L)
+                .title("title1")
+                .content("content1")
+                .boardType(EBoardType.FREE.toString())
+                .createdDate(LocalDateTime.of(2022, 7, 10, 16, 10, 5))
+                .deadLineDate(LocalDateTime.of(2022, 7, 10, 16, 10, 5))
+                .imageKeys(List.of(extractImageFrom(multipartFileList).get(0).getImageKey(),
+                                extractImageFrom(multipartFileList).get(1).getImageKey()))
+                .userName("kimjungwoo")
                 .build();
         return List.of(fixture1);
     }

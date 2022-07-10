@@ -3,23 +3,22 @@ package com.example.itaminbackend.domain.board.controller;
 import com.example.itaminbackend.BaseWebMvcTest;
 import com.example.itaminbackend.common.factory.BoardFactory;
 import com.example.itaminbackend.common.factory.FileFactory;
-import com.example.itaminbackend.domain.board.dto.BoardDto.CreateRequest;
-import com.example.itaminbackend.domain.board.dto.BoardDto.CreateResponse;
-import com.example.itaminbackend.domain.board.dto.BoardDto.UpdateRequest;
-import com.example.itaminbackend.domain.board.dto.BoardDto.UpdateResponse;
+import com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardType;
+import com.example.itaminbackend.domain.board.dto.BoardDto.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardResponseMessage.CREATE_BOARD_SUCCESS;
-import static com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardResponseMessage.UPDATE_BOARD_SUCCESS;
+import java.util.List;
+
+import static com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardResponseMessage.*;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -75,5 +74,49 @@ public class BoardControllerTest extends BaseWebMvcTest {
                 .andDo(print());
         then(this.boardService).should().updateBoard(any(UpdateRequest.class));
     }
+
+    @DisplayName("게시판 조회 테스트 - 성공")
+    @Test
+    @WithMockUser
+    void getDetailBoardTest_success() throws Exception {
+        //given
+        GetDetailResponse getDetailResponse = BoardFactory.mockDetailResponses().get(0);
+        given(this.boardService.getDetailBoard(any(Long.class)))
+                .willReturn(getDetailResponse);
+
+        //when
+        ResultActions perform = mockMvc.perform(get("/api/v1/boards/{boardId}", 1L));
+
+        //then
+        perform.andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(containsString(GET_DETAIL_BOARD_SUCCESS.getMessage())))
+                .andExpect(jsonPath("$.data.boardId").value(is(1)))
+                .andExpect(jsonPath("$.data.title").value(is("title1")))
+                .andExpect(jsonPath("$.data.content").value(is("content1")))
+                .andExpect(jsonPath("$.data.boardType").value(is(EBoardType.FREE.toString())))
+                .andExpect(jsonPath("$.data.createdDate").value(is("2022-07-10T16:10:05")))
+                .andExpect(jsonPath("$.data.deadLineDate").value(is("2022-07-10T16:10:05")))
+                .andExpect(jsonPath("$.data.imageKeys").value(is(List.of("files", "files"))))
+                .andExpect(jsonPath("$.data.userName").value(is("kimjungwoo")))
+                .andDo(print());
+        then(this.boardService).should().getDetailBoard(any(Long.class));
+    }
+
+
+    @DisplayName("게시판 삭제 테스트 - 성공")
+    @Test
+    @WithMockUser
+    void deleteBoardTest_success() throws Exception {
+
+        //when
+        ResultActions perform = mockMvc.perform(delete("/api/v1/boards/{boardId}", 1L));
+
+        //then
+        perform.andExpect(status().isOk())
+                        .andExpect(jsonPath("$.message").value(containsString(DELETE_BOARD_SUCCESS.getMessage())))
+                        .andDo(print());
+        then(this.boardService).should().deleteBoard(any(Long.class));
+    }
+
 
 }
