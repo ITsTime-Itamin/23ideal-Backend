@@ -30,7 +30,7 @@ public class UserController {
 
     @ApiOperation(value = "구글 로그인", notes = "구글 로그인을 합니다.")
     @PostMapping("/googleLogin")
-    public ResponseEntity<ResponseDto<GoogleLoginRequest>> googleLogin(@Valid @RequestBody GoogleLoginRequest googleLoginRequest){
+    public ResponseEntity<ResponseDto<LoginResponse>> googleLogin(@Valid @RequestBody GoogleLoginRequest googleLoginRequest){
         return ResponseEntity.ok(ResponseDto.create(EUserResponseMessage.GOOGLELOGIN_SUCCESS.getMessage(), this.userService.authGoogleUser(googleLoginRequest)));
     }
 
