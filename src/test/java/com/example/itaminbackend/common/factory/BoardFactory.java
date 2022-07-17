@@ -7,6 +7,10 @@ import com.example.itaminbackend.domain.board.dto.BoardDto.UpdateResponse;
 import com.example.itaminbackend.domain.board.entity.Board;
 import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.domain.user.entity.User;
+import com.example.itaminbackend.global.dto.PaginationDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -95,6 +99,24 @@ public class BoardFactory {
                 .build();
         return List.of(fixture1);
     }
+
+//    public static List<GetDetailResponse> mockDetailResponses() {
+//        List<MultipartFile> multipartFileList = List.of(FileFactory.getTestImage1(), FileFactory.getTestImage2());
+//        multipartFileList.get(0).getOriginalFilename();
+//        GetDetailResponse fixture1 = GetDetailResponse.builder()
+//                .boardId(1L)
+//                .title("title1")
+//                .content("content1")
+//                .boardType(EBoardType.FREE.toString())
+//                .createdDate(LocalDateTime.of(2022, 7, 10, 16, 10, 5))
+//                .deadLineDate(LocalDateTime.of(2022, 7, 10, 16, 10, 5))
+//                .imageKeys(List.of(extractImageFrom(multipartFileList).get(0).getImageKey(),
+//                        extractImageFrom(multipartFileList).get(1).getImageKey()))
+//                .userName("kimjungwoo")
+//                .build();
+//        return List.of(fixture1);
+//    }
+
 
     public static List<Board> mockBoards(){
         List<MultipartFile> multipartFileList = List.of(FileFactory.getTestImage1(), FileFactory.getTestImage2());

@@ -106,7 +106,7 @@ jasypt:
 jwt:
   header: Authorization
   secret: ENC(AzJYqum03D6EQohX92szB6i2yqhHVr7ToZvRvtt/hYypx2VZCW8M4DD9XwdUKu0D9w8gVsTcZ5TLTcm+FabTtpx1MaoY6x8a0AOnJ4HoPba4kEF/KxWYd2z5WhaKrK37BMkbzY64rjYxvcQcYyiu5nNO6AVDnswOcknAYQm6l7ST+Rqt71IFpmWuW+E5O7/f)
-  access-token-validity-in-seconds: 1800000
+  access-token-validity-in-seconds: 86400000
   refresh-token-validity-in-seconds: 1209600000
 
 ---
@@ -210,5 +210,5 @@ jasypt:
 jwt:
   header: Authorization
   secret: ENC(AzJYqum03D6EQohX92szB6i2yqhHVr7ToZvRvtt/hYypx2VZCW8M4DD9XwdUKu0D9w8gVsTcZ5TLTcm+FabTtpx1MaoY6x8a0AOnJ4HoPba4kEF/KxWYd2z5WhaKrK37BMkbzY64rjYxvcQcYyiu5nNO6AVDnswOcknAYQm6l7ST+Rqt71IFpmWuW+E5O7/f)
-  access-token-validity-in-seconds: 1800000
+  access-token-validity-in-seconds: 86400000
   refresh-token-validity-in-seconds: 1209600000

@@ -83,5 +83,25 @@ public abstract class ScrapDto {
         private Boolean isScraped;
     }
 
+    @Getter
+    @AllArgsConstructor
+    @ApiModel(description = "해당 유저의 게시판 목록 조회 요청 객체")
+    @Builder
+    public static class ScrapedBoardsByUserRequest {
+        private Long userId;
+    }
+
+    @Getter
+    @ApiModel(description = "해당 유저의 게시판 목록 조회 응답 객체")
+    @Builder
+    public static class ScrapedBoardsByUserResponse {
+        private Long boardId;
+
+        @QueryProjection
+        public ScrapedBoardsByUserResponse(Long boardId) {
+            this.boardId = boardId;
+        }
+    }
+
 
 }
