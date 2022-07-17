@@ -63,4 +63,10 @@ public class ScrapController {
                 , this.scrapService.getBoardsByScrapRanking(pageable)));
     }
 
+    @ApiOperation(value = "해당 유저의 스크랩한 게시판 목록 조회", notes = "해당 유저의 스크랩한 게시판 목록 조회")
+    @GetMapping("/whether/users")
+    public ResponseEntity<ResponseDto<PaginationDto<List<ScrapedBoardsByUserResponse>>>> getScrapedBoardsByUser(@PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(ResponseDto.create(EScrapResponseMessage.GET_SCRAPED_BOARDS_BY_USER.getMessage()
+                , this.scrapService.getScrapedBoardsByUser(pageable)));
+    }
 }

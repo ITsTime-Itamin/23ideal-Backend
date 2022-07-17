@@ -65,4 +65,11 @@ public class ScrapServiceImpl implements ScrapService{
         List<BoardInquiryByScrapRankingResponse> data = page.get().collect(Collectors.toList());
         return PaginationDto.of(page, data);
     }
+
+    @Override
+    public PaginationDto<List<ScrapedBoardsByUserResponse>> getScrapedBoardsByUser(Pageable pageable) {
+        Page<ScrapedBoardsByUserResponse> page = this.scrapRepository.findBoardByUserAndScraped(SecurityUtils.getLoggedInUser(), pageable);
+        List<ScrapedBoardsByUserResponse> data = page.get().collect(Collectors.toList());
+        return PaginationDto.of(page, data);
+    }
 }

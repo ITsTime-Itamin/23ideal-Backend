@@ -2,7 +2,9 @@ package com.example.itaminbackend.domain.scrap.repository;
 
 import com.example.itaminbackend.domain.board.entity.Board;
 import com.example.itaminbackend.domain.scrap.dto.QScrapDto_BoardInquiryByScrapRankingResponse;
+import com.example.itaminbackend.domain.scrap.dto.QScrapDto_ScrapedBoardsByUserResponse;
 import com.example.itaminbackend.domain.scrap.dto.ScrapDto.BoardInquiryByScrapRankingResponse;
+import com.example.itaminbackend.domain.scrap.dto.ScrapDto.ScrapedBoardsByUserResponse;
 import com.example.itaminbackend.domain.scrap.entity.Scrap;
 import com.example.itaminbackend.domain.user.entity.User;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -19,6 +21,7 @@ import java.util.Optional;
 
 import static com.example.itaminbackend.domain.board.entity.QBoard.board;
 import static com.example.itaminbackend.domain.scrap.entity.QScrap.scrap;
+import static com.example.itaminbackend.domain.user.entity.QUser.user;
 
 public class ScrapRepositoryImpl implements ScrapRepositoryCustom{
 
@@ -45,6 +48,34 @@ public class ScrapRepositoryImpl implements ScrapRepositoryCustom{
                         userEq(user),
                         isDeletedCheckOfScrap())
                 .fetchOne());
+    }
+
+    @Override
+    public Page<ScrapedBoardsByUserResponse> findBoardByUserAndScraped(User inputUser, Pageable pageable) {
+        List<ScrapedBoardsByUserResponse> content = queryFactory
+                .select(new QScrapDto_ScrapedBoardsByUserResponse(
+                        board.boardId
+                ))
+                .from(board)
+                .leftJoin(board.scraps, scrap)
+                .leftJoin(board.user, user)
+                .where(userEq(inputUser), isDeletedCheckOfBoard(), isDeletedCheckOfScrap())
+                .groupBy(board.boardId)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<ScrapedBoardsByUserResponse> countQuery = queryFactory
+                .select(new QScrapDto_ScrapedBoardsByUserResponse(
+                        board.boardId
+                ))
+                .from(board)
+                .leftJoin(board.scraps, scrap)
+                .leftJoin(board.user, user)
+                .where(userEq(inputUser), isDeletedCheckOfBoard(), isDeletedCheckOfScrap())
+                .groupBy(board.boardId);
+
+        return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchCount());
     }
 
     @Override

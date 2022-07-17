@@ -13,5 +13,6 @@ public interface ScrapService {
     ScrapChangeResponse changeScrap(ScrapChangeRequest scrapChangeRequest);
     ScrapOrNotResponse getScrapOrNot(ScrapDto.ScrapOrNotRequest scrapOrNotRequest);
     PaginationDto<List<BoardInquiryByScrapRankingResponse>> getBoardsByScrapRanking(Pageable pageable);
+    PaginationDto<List<ScrapedBoardsByUserResponse>> getScrapedBoardsByUser(Pageable pageable);
 
 }
