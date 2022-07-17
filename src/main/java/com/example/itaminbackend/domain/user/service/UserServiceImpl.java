@@ -123,43 +123,43 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public GoogleLoginRequest providegoogleJWTToken(User user){
-
-        //Header 부분 설정
-        Map<String, Object> headers = new HashMap<>();
-        headers.put("typ", "JWT");
-        headers.put("alg", "HS256");
-        //헤더에는 jwt의 암호화 방법 정보가 들어있다.
-
-        //payload 부분 설정
-        String email=user.getEmail();
-        String imageUrl=user.getImageUrl();
-        String name=user.getName();
-
-        System.out.println("jwt providing email");
-        log.info(email);
-        log.info(imageUrl);
-        log.info(name);
-
-        Map<String, Object> payloads = new HashMap<>();
-        payloads.put("email", email);
-        payloads.put("imageUrl", imageUrl);
-        payloads.put("name", name);
-        //실제적인 jwt의 데이터를 담당하는 부분이다.
-
-        // 토큰 Builder
-        String jwt = Jwts.builder()
-                .setHeader(headers) // Headers 설정
-                .setClaims(payloads) // Claims 설정
-                .signWith(SignatureAlgorithm.HS256, key.getBytes()) // HS256과 Key로 Sign
-                .compact(); // 토큰 생성
-        log.info(jwt);
-
-        GoogleLoginRequest googleLoginRequest = new GoogleLoginRequest();
-        googleLoginRequest.setToken(jwt);
-        return googleLoginRequest;
-    }
+//    @Override
+//    public GoogleLoginRequest providegoogleJWTToken(User user){
+//
+//        //Header 부분 설정
+//        Map<String, Object> headers = new HashMap<>();
+//        headers.put("typ", "JWT");
+//        headers.put("alg", "HS256");
+//        //헤더에는 jwt의 암호화 방법 정보가 들어있다.
+//
+//        //payload 부분 설정
+//        String email=user.getEmail();
+//        String imageUrl=user.getImageUrl();
+//        String name=user.getName();
+//
+//        System.out.println("jwt providing email");
+//        log.info(email);
+//        log.info(imageUrl);
+//        log.info(name);
+//
+//        Map<String, Object> payloads = new HashMap<>();
+//        payloads.put("email", email);
+//        payloads.put("imageUrl", imageUrl);
+//        payloads.put("name", name);
+//        //실제적인 jwt의 데이터를 담당하는 부분이다.
+//
+//        // 토큰 Builder
+//        String jwt = Jwts.builder()
+//                .setHeader(headers) // Headers 설정
+//                .setClaims(payloads) // Claims 설정
+//                .signWith(SignatureAlgorithm.HS256, key.getBytes()) // HS256과 Key로 Sign
+//                .compact(); // 토큰 생성
+//        log.info(jwt);
+//
+//        GoogleLoginRequest googleLoginRequest = new GoogleLoginRequest();
+//        googleLoginRequest.setToken(jwt);
+//        return googleLoginRequest;
+//    }
 //
 //    public NaverLoginRequest providenaverJWTToken(User user){
 //
@@ -192,7 +192,7 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
-    public GoogleLoginRequest authGoogleUser(GoogleLoginRequest googleLoginRequest){
+    public LoginResponse authGoogleUser(GoogleLoginRequest googleLoginRequest){
         String tokenId = googleLoginRequest.getToken(); // test받는 식으로 받던가 tokenId받는 식으로 받던가임
         log.info(tokenId);
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
@@ -206,7 +206,7 @@ public class UserServiceImpl implements UserService {
         try {
             GoogleIdToken idToken = verifier.verify(tokenId); //  verifies the JWT signature, the aud claim, the iss claim, and the exp claim.
 
-            System.out.println("verify");
+            System.out.println("idToken"+idToken);
 
             if (idToken != null) {
                 GoogleIdToken.Payload payload = idToken.getPayload();
@@ -217,6 +217,13 @@ public class UserServiceImpl implements UserService {
                 String pictureUrl = (String) payload.get("picture");
                 Boolean emailVerified=payload.getEmailVerified();
 
+                Map userMap = new HashMap<String, String>();
+                userMap.put("email", email);
+                userMap.put("name", name);
+                userMap.put("pictureUrl", pictureUrl);
+                userMap.put("emailVerified", emailVerified);
+
+
                 log.info(email);
                 log.info(name);
                 log.info(pictureUrl);
@@ -225,19 +232,29 @@ public class UserServiceImpl implements UserService {
                 User user=new User(name,email,pictureUrl,emailVerified);
                 System.out.println("setting");
 
-
                 saveOrUpdate(user);
-                return providegoogleJWTToken(user);
+                /**
+                 * Spring Security by jungwoo
+                 */
+                List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+                authorities.add(new SimpleGrantedAuthority(String.valueOf(ROLE_USER)));
+                OAuth2User userDetails = new DefaultOAuth2User(authorities, userMap, "email");
+                OAuth2AuthenticationToken auth = new OAuth2AuthenticationToken(userDetails, authorities, "email");
+                auth.setDetails(userDetails);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+                TokenInfoResponse tokenInfoResponse = tokenProvider.createToken(auth);
+
+                return LoginResponse.from(tokenInfoResponse);
 
             } else {
                 String result = "Invalid ID token.";
                 googleLoginRequest.setToken(result);
-                return googleLoginRequest;
+                return null;
             }
         }
         catch(Exception e){
             googleLoginRequest.setToken("invalid Id token");
-            return googleLoginRequest;
+            return null;
         }
     }
 
