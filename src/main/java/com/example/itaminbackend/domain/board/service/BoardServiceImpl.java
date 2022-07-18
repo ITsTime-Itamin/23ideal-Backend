@@ -1,17 +1,22 @@
 package com.example.itaminbackend.domain.board.service;
 
 import com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardType;
-import com.example.itaminbackend.domain.board.dto.BoardDto;
-import com.example.itaminbackend.domain.board.dto.BoardDto.*;
+import com.example.itaminbackend.domain.board.constant.BoardConnectionConstants.EDiaryConnectionServiceImpl;
+import com.example.itaminbackend.domain.board.dto.BoardDto.CreateRequest;
+import com.example.itaminbackend.domain.board.dto.BoardDto.CreateResponse;
+import com.example.itaminbackend.domain.board.dto.BoardDto.UpdateRequest;
+import com.example.itaminbackend.domain.board.dto.BoardDto.UpdateResponse;
 import com.example.itaminbackend.domain.board.dto.BoardMapper;
 import com.example.itaminbackend.domain.board.dto.BoardMapperSupport;
 import com.example.itaminbackend.domain.board.entity.Board;
+import com.example.itaminbackend.domain.board.entity.BoardConnection;
 import com.example.itaminbackend.domain.board.exception.NotBoardWriterException;
 import com.example.itaminbackend.domain.board.exception.NotFoundBoardException;
+import com.example.itaminbackend.domain.board.repository.BoardConnectionRepository;
 import com.example.itaminbackend.domain.board.repository.BoardRepository;
-import com.example.itaminbackend.domain.comment.service.CommentService;
 import com.example.itaminbackend.domain.image.entity.Image;
 import com.example.itaminbackend.domain.image.service.ImageService;
+import com.example.itaminbackend.domain.user.entity.User;
 import com.example.itaminbackend.global.config.security.util.SecurityUtils;
 import com.example.itaminbackend.global.dto.PaginationDto;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +25,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.example.itaminbackend.domain.board.dto.BoardDto.GetAllResponse;
@@ -35,6 +43,7 @@ public class BoardServiceImpl implements BoardService{
     private final BoardMapper boardMapper;
     private final ImageService imageService;
     private final BoardMapperSupport boardMapperSupport;
+    private final BoardConnectionRepository boardConnectionRepository;
 
     /**
      * Command
@@ -69,15 +78,24 @@ public class BoardServiceImpl implements BoardService{
         return board;
     }
 
+    @Override
+    public GetDetailResponse getDetailBoard(Long boardId) {
+        Board board = this.validateBoardId(boardId);
+        Optional<List<BoardConnection>> findBoardConnection = this.boardConnectionRepository.findByBoard_BoardId(boardId);
+        User user = SecurityUtils.getLoggedInUser();
+        if(findBoardConnection.isEmpty()) this.boardConnectionRepository.save(BoardConnection.toEntity(board, user));
+        else {
+            BoardConnection boardConnection = validateCurrentModifiedDateDiaryConnection(findBoardConnection.get());
+            if (boardConnection != null) boardConnection.setLastModifiedDate(LocalDateTime.now());
+            else this.boardConnectionRepository.save(BoardConnection.toEntity(board, user));
+        }
+        Integer diaryConnectionCount = this.boardConnectionRepository.findConnectionCountByBoard(board).get();
+        return this.boardMapper.toGetDetailResponse(board, diaryConnectionCount);
+    }
+
     /**
      * Query
      */
-
-    @Override
-    @Transactional(readOnly=true)
-    public GetDetailResponse getDetailBoard(Long boardId) {
-        return this.boardMapper.toGetDetailResponse(this.validateBoardId(boardId));
-    }
 
     @Override
     @Transactional(readOnly=true)
@@ -97,6 +115,16 @@ public class BoardServiceImpl implements BoardService{
 
     public void validateCreatedUser(Board board) {
         if(!(board.getUser().getUserId().equals(SecurityUtils.getLoggedInUser().getUserId()))) throw new NotBoardWriterException();
+    }
+
+    private BoardConnection validateCurrentModifiedDateDiaryConnection(List<BoardConnection> boardConnectionList) {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        for (BoardConnection diaryConnection : boardConnectionList) {
+            LocalDateTime lastModifiedDate = diaryConnection.getLastModifiedDate();
+            if (lastModifiedDate.until(localDateTime, ChronoUnit.MINUTES) < EDiaryConnectionServiceImpl.eThirtyMinutes.getValue()) {
+                return diaryConnection;
+            }
+        } return null;
     }
 
 }

@@ -48,6 +48,9 @@ public class Board extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    private List<BoardConnection> boardConnections = new ArrayList<>();
+
     @Builder
     public Board(String title, String content){
         this.title = title;

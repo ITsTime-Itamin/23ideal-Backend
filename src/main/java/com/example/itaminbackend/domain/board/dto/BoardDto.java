@@ -112,6 +112,7 @@ public abstract class BoardDto {
         private LocalDateTime deadLineDate;
         private List<String> imageKeys;
         private String userName;
+        private Integer diaryConnectionCount;
     }
 
     @Getter

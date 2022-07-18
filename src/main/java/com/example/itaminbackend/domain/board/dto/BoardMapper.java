@@ -31,14 +31,15 @@ public interface BoardMapper{
     @Mapping(target = "boardId", source = "boardId")
     UpdateResponse toUpdateResponse(Board board);
 
-    @Mapping(target = "boardId", source = "boardId")
-    @Mapping(target = "title", source = "title")
-    @Mapping(target = "content", source = "content")
-    @Mapping(target = "boardType", source = "boardType")
-    @Mapping(target = "createdDate", source = "createdDate")
-    @Mapping(target = "deadLineDate", source = "deadLineDate")
-    @Mapping(target = "imageKeys", source = "images", qualifiedByName = "getImageKeys")
+    @Mapping(target = "boardId", source = "board.boardId")
+    @Mapping(target = "title", source = "board.title")
+    @Mapping(target = "content", source = "board.content")
+    @Mapping(target = "boardType", source = "board.boardType")
+    @Mapping(target = "createdDate", source = "board.createdDate")
+    @Mapping(target = "deadLineDate", source = "board.deadLineDate")
+    @Mapping(target = "imageKeys", source = "board.images", qualifiedByName = "getImageKeys")
     @Mapping(target = "userName", source = "board.user.name")
-    GetDetailResponse toGetDetailResponse(Board board);
+    @Mapping(target = "diaryConnectionCount", source = "diaryConnectionCount")
+    GetDetailResponse toGetDetailResponse(Board board, Integer diaryConnectionCount);
 
 }
