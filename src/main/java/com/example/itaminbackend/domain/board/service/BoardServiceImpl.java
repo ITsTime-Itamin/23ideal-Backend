@@ -1,10 +1,8 @@
 package com.example.itaminbackend.domain.board.service;
 
 import com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardType;
-import com.example.itaminbackend.domain.board.dto.BoardDto.CreateRequest;
-import com.example.itaminbackend.domain.board.dto.BoardDto.CreateResponse;
-import com.example.itaminbackend.domain.board.dto.BoardDto.UpdateRequest;
-import com.example.itaminbackend.domain.board.dto.BoardDto.UpdateResponse;
+import com.example.itaminbackend.domain.board.dto.BoardDto;
+import com.example.itaminbackend.domain.board.dto.BoardDto.*;
 import com.example.itaminbackend.domain.board.dto.BoardMapper;
 import com.example.itaminbackend.domain.board.dto.BoardMapperSupport;
 import com.example.itaminbackend.domain.board.entity.Board;
@@ -83,8 +81,8 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     @Transactional(readOnly=true)
-    public PaginationDto<List<GetAllResponse>> getAllDetailBoards(Pageable pageable) {
-        Page<GetAllResponse> page = this.boardRepository.findAllDetailBoardsByCreatedDate(pageable);
+    public PaginationDto<List<GetAllResponse>> getAllDetailBoards(Pageable pageable, String boardType) {
+        Page<GetAllResponse> page = this.boardRepository.findAllDetailBoardsByCreatedDate(pageable, boardType);
         List<GetAllResponse> data = page.get().collect(Collectors.toList());
         return PaginationDto.of(page, data);
     }

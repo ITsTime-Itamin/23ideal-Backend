@@ -161,14 +161,14 @@ class BoardServiceImplTest extends BaseTest {
         //given
         Board board1 = BoardFactory.mockBoards().get(0);
         Board board2 = BoardFactory.mockBoards().get(1);
-        GetAllResponse getAllResponse1 = new GetAllResponse(board1.getBoardId(), board1.getTitle(), board1.getContent(), board1.getCreatedDate(), board1.getImages().get(0).getImageKey(), user.getName());
-        GetAllResponse getAllResponse2 = new GetAllResponse(board2.getBoardId(), board2.getTitle(), board2.getContent(), board2.getCreatedDate(), board2.getImages().get(0).getImageKey(), user.getName());
+        GetAllResponse getAllResponse1 = new GetAllResponse(board1.getBoardId(), board1.getTitle(), board1.getContent(), board1.getCreatedDate(), board1.getBoardType().toString(), board1.getImages().get(0).getImageKey(), user.getName());
+        GetAllResponse getAllResponse2 = new GetAllResponse(board2.getBoardId(), board2.getTitle(), board2.getContent(), board2.getCreatedDate(), board1.getBoardType().toString(), board2.getImages().get(0).getImageKey(), user.getName());
         Page<GetAllResponse> page = PageableExecutionUtils.getPage(List.of(getAllResponse1, getAllResponse2), PageRequest.of(0, 10), () -> 2);
         PaginationDto<List<GetAllResponse>> data = PaginationDto.of(page, page.get().collect(toList()));
-        given(this.boardRepository.findAllDetailBoardsByCreatedDate(any())).willReturn(page);
+        given(this.boardRepository.findAllDetailBoardsByCreatedDate(any(), any())).willReturn(page);
 
         //when
-        PaginationDto<List<GetAllResponse>> autual = this.boardService.getAllDetailBoards(PageRequest.of(0, 10));
+        PaginationDto<List<GetAllResponse>> autual = this.boardService.getAllDetailBoards(PageRequest.of(0, 10), board1.getBoardType().toString());
 
         //then
         assertThat(autual)

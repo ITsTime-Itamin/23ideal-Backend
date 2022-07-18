@@ -14,7 +14,7 @@ public interface BoardService {
     UpdateResponse updateBoard(UpdateRequest updateRequest);
     GetDetailResponse getDetailBoard(Long boardId);
     Board deleteBoard(Long boardId);
-    PaginationDto<List<GetAllResponse>> getAllDetailBoards(Pageable pageable);
+    PaginationDto<List<GetAllResponse>> getAllDetailBoards(Pageable pageable, String boardType);
 
     Board validateBoardId(Long boardId);
     void validateCreatedUser(Board board);

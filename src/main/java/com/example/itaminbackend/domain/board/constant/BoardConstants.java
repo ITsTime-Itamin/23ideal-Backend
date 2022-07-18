@@ -37,6 +37,7 @@ public class BoardConstants {
         JOB("취업공고"),
         RECRUITMENT("모집공고"),
         YOUTH_SUPPORT("청년지원");
+
         private final String value;
     }
 

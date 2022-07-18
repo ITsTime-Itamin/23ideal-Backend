@@ -11,6 +11,6 @@ import static com.example.itaminbackend.domain.board.dto.BoardDto.*;
 
 public interface BoardRepositoryCustom {
     Optional<Board> findNotDeletedByBoardId(Long boardId);
-    Page<GetAllResponse> findAllDetailBoardsByCreatedDate(Pageable pageable);
+    Page<GetAllResponse> findAllDetailBoardsByCreatedDate(Pageable pageable, String boardType);
 
 }

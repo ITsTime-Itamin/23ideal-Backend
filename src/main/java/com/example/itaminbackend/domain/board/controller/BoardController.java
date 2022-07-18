@@ -66,8 +66,8 @@ public class BoardController {
 
     @ApiOperation(value = "게시판 작성 시간순 조회", notes = "게시판 글을 작성 시간순으로 조회합니다.")
     @GetMapping
-    public ResponseEntity<ResponseDto<PaginationDto<List<GetAllResponse>>>> getAllDetailBoards(@PageableDefault Pageable pageable){
-        return ResponseEntity.ok(ResponseDto.create(EBoardResponseMessage.GET_ALL_DETAIL_BOARDS_SUCCESS.getMessage(), this.boardService.getAllDetailBoards(pageable)));
+    public ResponseEntity<ResponseDto<PaginationDto<List<GetAllResponse>>>> getAllDetailBoards(@PageableDefault Pageable pageable, @RequestParam(name="boardType") String boardType){
+        return ResponseEntity.ok(ResponseDto.create(EBoardResponseMessage.GET_ALL_DETAIL_BOARDS_SUCCESS.getMessage(), this.boardService.getAllDetailBoards(pageable, boardType)));
     }
 
 

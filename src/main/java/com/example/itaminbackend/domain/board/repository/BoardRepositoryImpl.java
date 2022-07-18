@@ -1,5 +1,7 @@
 package com.example.itaminbackend.domain.board.repository;
 
+import com.example.itaminbackend.domain.board.constant.BoardConstants;
+import com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardType;
 import com.example.itaminbackend.domain.board.dto.QBoardDto_GetAllResponse;
 import com.example.itaminbackend.domain.board.entity.Board;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -35,18 +37,19 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
     }
 
     @Override
-    public Page<GetAllResponse> findAllDetailBoardsByCreatedDate(Pageable pageable) {
+    public Page<GetAllResponse> findAllDetailBoardsByCreatedDate(Pageable pageable, String boardType) {
         List<GetAllResponse> content = queryFactory
                 .select(new QBoardDto_GetAllResponse(board.boardId,
                         board.title,
                         board.content,
                         board.createdDate,
+                        board.boardType.stringValue(),
                         image.imageKey,
                         user.name))
                 .from(board)
                 .leftJoin(board.images, image)
                 .leftJoin(board.user, user)
-                .where(isDeletedCheck())
+                .where(isDeletedCheck(), boardTypeEq(boardType))
                 .orderBy(board.createdDate.desc())
                 .groupBy(board.boardId)
                 .offset(pageable.getOffset())
@@ -58,6 +61,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
                         board.title,
                         board.content,
                         board.createdDate,
+                        board.boardType.stringValue(),
                         image.imageKey,
                         user.name))
                 .from(board)
@@ -75,5 +79,8 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
 
     private BooleanExpression boardIdEq(Long boardId) {
         return boardId != null ? board.boardId.eq(boardId) : null;
+    }
+    private BooleanExpression boardTypeEq(String boardType) {
+        return boardType != null ? board.boardType.eq(EBoardType.valueOf(boardType)) : null;
     }
 }
