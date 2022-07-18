@@ -137,23 +137,23 @@ class BoardServiceImplTest extends BaseTest {
         then(this.boardRepository).should().findNotDeletedByBoardId(anyLong());
     }
 
-    @DisplayName("게시판 조회 테스트 - 성공")
-    @Test
-    void getDetailBoardTest_success() {
-        //given
-        Board board = BoardFactory.mockBoards().get(0);
-        board.setUser(user);
-        given(this.boardRepository.findNotDeletedByBoardId(anyLong())).willReturn(Optional.of(board));
-
-        //when
-        GetDetailResponse detailBoardResponse = this.boardService.getDetailBoard(board.getBoardId());
-
-        //then
-        assertThat(detailBoardResponse)
-                .usingRecursiveComparison()
-                .isEqualTo(this.boardMapper.toGetDetailResponse(board));
-        then(this.boardRepository).should().findNotDeletedByBoardId(anyLong());
-    }
+//    @DisplayName("게시판 조회 테스트 - 성공")
+//    @Test
+//    void getDetailBoardTest_success() {
+//        //given
+//        Board board = BoardFactory.mockBoards().get(0);
+//        board.setUser(user);
+//        given(this.boardRepository.findNotDeletedByBoardId(anyLong())).willReturn(Optional.of(board));
+//
+//        //when
+//        GetDetailResponse detailBoardResponse = this.boardService.getDetailBoard(board.getBoardId());
+//
+//        //then
+//        assertThat(detailBoardResponse)
+//                .usingRecursiveComparison()
+//                .isEqualTo(this.boardMapper.toGetDetailResponse(board));
+//        then(this.boardRepository).should().findNotDeletedByBoardId(anyLong());
+//    }
 
     @DisplayName("게시판 작성 시간순 조회 테스트 - 성공")
     @Test
