@@ -31,14 +31,14 @@ public class BoardConstants {
     @RequiredArgsConstructor
     public enum EBoardType{
         NOTICE("공지사항"),
-        PROMOTION("홍보"),
+        DEPOSIT("보증금"),
         FREE("자유게시판"),
         REVIEW("후기"),
         JOB("취업공고"),
         YOUTH_HOUSE("청년주택"),
         RENTAL_HOUSE("임대주택"),
         HAPPY_HOUSE("행복주택"),
-        YOUTH_SUPPORT("청년지원");
+        LOAN_SUPPORT("대출지원");
 
         private final String value;
     }
