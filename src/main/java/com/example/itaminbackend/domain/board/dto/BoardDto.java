@@ -116,25 +116,39 @@ public abstract class BoardDto {
 
     @Getter
     @Builder
+    @AllArgsConstructor
+    @ApiModel(description = "게시판 전체 조회를 위한 요청 객체")
+    public static class GetAllRequest {
+        @NotBlank(message = "게시판 유형을 입력해 주세요.")
+        @ApiModelProperty(notes = "게시판 유형을 입력해 주세요.")
+        @Enum(enumClass = EBoardType.class)
+        private String boardType;
+    }
+
+    @Getter
+    @Builder
     @ApiModel(description = "게시판 전체 조회를 위한 응답 객체")
     public static class GetAllResponse {
         private Long boardId;
         private String title;
         private String content;
         private LocalDateTime createdDate;
+        private String boardType;
         private String imageKey;
         private String userName;
 
         @QueryProjection
-        public GetAllResponse(Long boardId, String title, String content, LocalDateTime createdDate, String imageKey, String userName) {
+        public GetAllResponse(Long boardId, String title, String content, LocalDateTime createdDate, String boardType, String imageKey, String userName) {
             this.boardId = boardId;
             this.title = title;
             this.content = content;
             this.createdDate = createdDate;
+            this.boardType = boardType;
             this.imageKey = imageKey;
             this.userName = userName;
         }
     }
+
 
 
 }

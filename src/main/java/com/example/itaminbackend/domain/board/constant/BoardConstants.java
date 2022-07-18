@@ -34,7 +34,10 @@ public class BoardConstants {
         PROMOTION("홍보"),
         FREE("자유게시판"),
         REVIEW("후기"),
-        JOB("취업공고");
+        JOB("취업공고"),
+        RECRUITMENT("모집공고"),
+        YOUTH_SUPPORT("청년지원");
+
         private final String value;
     }
 
