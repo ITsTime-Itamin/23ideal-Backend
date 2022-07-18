@@ -150,7 +150,7 @@ spring:
       client:
         registration:
           google:
-            clientId: ENC(FDExiUkjGRvqYXUJRisQE5obxAf5YOHpV/AmapZORaxt9Z7a15oQdZ3sVoOHk1Yf7hbA2WTeUV0dInRL+YdV/1SBFkPipia8S37Nlz0tjMDLJxfib0H7Ew==)
+            clientId: ENC(cQdt/RjH+0M51cWoHk+nzWCyYAGj70SsP9fl6osA/OAitXiBBp0O3QoYkxmdblEgWK1s5v8vFuTsBhZtHe0CZ08qJFmlINzAAFea4qO9ALSR6XgY+EQ3Jw==)
             clientSecret: ENC(BSdvkKGSzhsMqcivOGNKyenoajcesDldhQ20zY3QKdOEN063w4yeDkmYZpqOGbUC)
             redirectUri: "http://localhost:8080/login/oauth2/code/google"
             scope:
