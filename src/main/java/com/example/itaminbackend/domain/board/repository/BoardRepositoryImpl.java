@@ -5,6 +5,7 @@ import com.example.itaminbackend.domain.board.constant.BoardConstants.EBoardType
 import com.example.itaminbackend.domain.board.dto.QBoardDto_GetAllResponse;
 import com.example.itaminbackend.domain.board.entity.Board;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import java.util.Optional;
 import static com.example.itaminbackend.domain.board.dto.BoardDto.GetAllResponse;
 import static com.example.itaminbackend.domain.board.entity.QBoard.board;
 import static com.example.itaminbackend.domain.image.entity.QImage.image;
+import static com.example.itaminbackend.domain.scrap.entity.QScrap.scrap;
 import static com.example.itaminbackend.domain.user.entity.QUser.user;
 
 public class BoardRepositoryImpl implements BoardRepositoryCustom{
@@ -45,10 +47,12 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
                         board.createdDate,
                         board.boardType.stringValue(),
                         image.imageKey,
-                        user.name))
+                        user.name,
+                        scrapCount.sum()))
                 .from(board)
                 .leftJoin(board.images, image)
                 .leftJoin(board.user, user)
+                .leftJoin(board.scraps, scrap)
                 .where(isDeletedCheck(), boardTypeEq(boardType))
                 .orderBy(board.createdDate.desc())
                 .groupBy(board.boardId)
@@ -63,15 +67,21 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
                         board.createdDate,
                         board.boardType.stringValue(),
                         image.imageKey,
-                        user.name))
+                        user.name,
+                        scrapCount.sum()))
                 .from(board)
                 .leftJoin(board.images, image)
                 .leftJoin(board.user, user)
+                .leftJoin(board.scraps, scrap)
                 .where(isDeletedCheck())
                 .orderBy(board.createdDate.desc())
                 .groupBy(board.boardId);
         return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchCount());
     }
+
+    NumberExpression<Long> scrapCount = scrap.isDeleted.
+            when(false).then(new Long(1)).
+            otherwise(new Long(0));
 
     private BooleanExpression isDeletedCheck() {
         return board.isDeleted.eq(false);
