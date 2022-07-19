@@ -137,9 +137,10 @@ public abstract class BoardDto {
         private String boardType;
         private String imageKey;
         private String userName;
+        private Long scrapCount;
 
         @QueryProjection
-        public GetAllResponse(Long boardId, String title, String content, LocalDateTime createdDate, String boardType, String imageKey, String userName) {
+        public GetAllResponse(Long boardId, String title, String content, LocalDateTime createdDate, String boardType, String imageKey, String userName, Long scrapCount) {
             this.boardId = boardId;
             this.title = title;
             this.content = content;
@@ -147,6 +148,7 @@ public abstract class BoardDto {
             this.boardType = boardType;
             this.imageKey = imageKey;
             this.userName = userName;
+            this.scrapCount = scrapCount;
         }
     }
 

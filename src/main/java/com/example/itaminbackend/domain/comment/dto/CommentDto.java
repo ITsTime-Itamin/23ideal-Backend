@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,18 +61,21 @@ public abstract class CommentDto {
         private Long userId;
         private String userName;
         private List<GetResponse> children = new ArrayList<>();
+        private LocalDateTime createdDate;
 
-        public GetResponse(Long commentId, String content, Long userId, String userName) {
+        public GetResponse(Long commentId, String content, Long userId, String userName, LocalDateTime createdDate) {
             this.commentId = commentId;
             this.content = content;
             this.userId = userId;
             this.userName = userName;
+            this.createdDate = createdDate;
         }
 
         public static GetResponse convertCommentToDto(Comment comment) {
+
             return comment.isDeleted() == true ?
-                    new GetResponse(comment.getCommentId(), "삭제된 댓글입니다.", null, null) :
-                    new GetResponse(comment.getCommentId(), comment.getContent(), comment.getUser().getUserId(), comment.getUser().getName());
+                    new GetResponse(comment.getCommentId(), "삭제된 댓글입니다.", null, null, null) :
+                    new GetResponse(comment.getCommentId(), comment.getContent(), comment.getUser().getUserId(), comment.getUser().getName(), comment.getCreatedDate());
         }
     }
 
