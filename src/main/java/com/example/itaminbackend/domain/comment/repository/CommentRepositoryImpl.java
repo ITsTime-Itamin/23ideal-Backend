@@ -23,7 +23,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom{
     @Override
     public Optional<Comment> findNotDeletedByCommentId(Long commentId) {
         return Optional.ofNullable(queryFactory.selectFrom(comment)
-                .where(boardIdEq(commentId),
+                .where(commentIdEq(commentId),
                         isDeletedCheck())
                 .fetchFirst());
     }
@@ -32,20 +32,23 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom{
     public List<Comment> findAllCommentsByBoardId(Long boardId) {
         return queryFactory.selectFrom(comment)
                 .leftJoin(comment.parent)
-                .fetchJoin()
-                .where(comment.board.boardId.eq(boardId))
+                .where(boardIdEq(boardId))
                 .orderBy(
-                        comment.parent.commentId.asc().nullsFirst(),
                         comment.createdDate.asc()
-                ).fetch();
+                )
+               .fetch();
     }
 
     private BooleanExpression isDeletedCheck() {
         return comment.isDeleted.eq(false);
     }
 
-    private BooleanExpression boardIdEq(Long commentId) {
+    private BooleanExpression commentIdEq(Long commentId) {
         return commentId != null ? comment.commentId.eq(commentId) : null;
+    }
+
+    private BooleanExpression boardIdEq(Long boardId) {
+        return boardId != null ? comment.board.boardId.eq(boardId) : null;
     }
 
 }

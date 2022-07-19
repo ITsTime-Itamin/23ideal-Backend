@@ -51,10 +51,14 @@ public class CommentServiceImpl implements CommentService{
         return comment;
     }
 
+    /**
+     * Query
+     */
+
     @Override
-    @Transactional(readOnly = true)
     public List<GetResponse> getAllCommentsByBoardId(Long boardId) {
-        return this.convertNestedStructure(this.commentRepository.findAllCommentsByBoardId(boardId));
+        List<Comment> allCommentsByBoardId = this.commentRepository.findAllCommentsByBoardId(boardId);
+        return this.convertNestedStructure(allCommentsByBoardId);
     }
 
     /**
