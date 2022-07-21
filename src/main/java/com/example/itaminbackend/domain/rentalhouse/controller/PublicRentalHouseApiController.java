@@ -38,14 +38,14 @@ public class PublicRentalHouseApiController {
                 , publicRentalHouseService.getPublicRentalHouseCount()));
     }
 
-    @ApiOperation(value="원하는 구의 공고 불러오기", notes="원하는 구의 공고 불러오기")
+    @ApiOperation(value="원하는 구의 공고 불러오기", notes="원하는 구의 공고 불러옵니다.")
     @GetMapping("/{signguCode}")
     public ResponseEntity<ResponseDto<PaginationDto<List<WantedPublicRentalHouseResponse>>>> getWantedPublicRentalHouse(@PathVariable String signguCode, @PageableDefault Pageable pageable){
         return ResponseEntity.ok(ResponseDto.create(EPublicRentalHouseResponseMessage.eGetWantedPublicRentalHouseSuccess.getMessage()
                 , publicRentalHouseService.getWantedPublicRentalHouse(signguCode,pageable)));
     }
 
-    @ApiOperation(value="원하는 공고 자세히 보기", notes="원하는 공고 자세히 보기")
+    @ApiOperation(value="원하는 공고 자세히 보기", notes="원하는 공고의 자세한 정보를 가져옵니다.")
     @GetMapping("/{publicRentalHouseId}")
     public ResponseEntity<ResponseDto<PublicRentalHouseDetailResponse>> getDetailPublicRentalHouse(@PathVariable Long publicRentalHouseId){
         return ResponseEntity.ok(ResponseDto.create(EPublicRentalHouseResponseMessage.eGetPublicRentalHouseDetailSuccess.getMessage(),
