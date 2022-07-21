@@ -46,7 +46,7 @@ public class PublicRentalHouseApiController {
     }
 
     @ApiOperation(value="원하는 공고 자세히 보기", notes="원하는 공고의 자세한 정보를 가져옵니다.")
-    @GetMapping("/{publicRentalHouseId}")
+    @GetMapping("/detail/{publicRentalHouseId}")
     public ResponseEntity<ResponseDto<PublicRentalHouseDetailResponse>> getDetailPublicRentalHouse(@PathVariable Long publicRentalHouseId){
         return ResponseEntity.ok(ResponseDto.create(EPublicRentalHouseResponseMessage.eGetPublicRentalHouseDetailSuccess.getMessage(),
                 publicRentalHouseService.getPublicRentalHouseDetail(publicRentalHouseId)));
