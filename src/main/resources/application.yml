@@ -23,7 +23,7 @@ spring:
       max-request-size: 10MB
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
@@ -130,7 +130,7 @@ spring:
       max-request-size: 10MB
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
