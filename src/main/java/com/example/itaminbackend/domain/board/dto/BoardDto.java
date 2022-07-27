@@ -134,17 +134,20 @@ public abstract class BoardDto {
         private String title;
         private String content;
         private LocalDateTime createdDate;
+        private LocalDateTime deadLineDate;
         private String boardType;
         private String imageKey;
         private String userName;
         private Long scrapCount;
 
+
         @QueryProjection
-        public GetAllResponse(Long boardId, String title, String content, LocalDateTime createdDate, String boardType, String imageKey, String userName, Long scrapCount) {
+        public GetAllResponse(Long boardId, String title, String content, LocalDateTime createdDate, LocalDateTime deadLineDate, String boardType, String imageKey, String userName, Long scrapCount) {
             this.boardId = boardId;
             this.title = title;
             this.content = content;
             this.createdDate = createdDate;
+            this.deadLineDate=deadLineDate;
             this.boardType = boardType;
             this.imageKey = imageKey;
             this.userName = userName;
