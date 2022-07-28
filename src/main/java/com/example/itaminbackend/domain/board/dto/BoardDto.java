@@ -44,7 +44,7 @@ public abstract class BoardDto {
 
         @NotBlank(message = "게시판 마감일자를 입력해 주세요.")
         @ApiModelProperty(notes = "게시판 마감일자를 입력해 주세요.")
-        @Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}\\s[0-9]{2}:[0-9]{2}:[0-9]{2}"
+        @Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}"
                 , message = "날짜 형식이 맞지 않습니다. yyyy-mm-ss hh:mm:ss 형식으로 입력해주세요.")
         private String deadLineDate;
 
@@ -84,7 +84,7 @@ public abstract class BoardDto {
 
         @NotBlank(message = "게시판 마감일자를 입력해 주세요.")
         @ApiModelProperty(notes = "게시판 마감일자를 입력해 주세요.")
-        @Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}\\s[0-9]{2}:[0-9]{2}:[0-9]{2}"
+        @Pattern(regexp = "[0-9]{4}-[0-9]{2}-[0-9]{2}"
                 , message = "날짜 형식이 맞지 않습니다. yyyy-mm-ss hh:mm:ss 형식으로 입력해주세요.")
         private String deadLineDate;
 

@@ -20,7 +20,6 @@ public class BoardMapperSupport {
 
     @Named("saveImages")
     public List<Image> saveImages(List<MultipartFile> files) throws IOException {
-        System.out.println("세이브들어오는지");
         return this.imageService.saveImages(files);
     }
 
@@ -36,7 +35,7 @@ public class BoardMapperSupport {
     @Named("toLocalDateTime")
     public LocalDateTime toLocalDateTime(String deadLineDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime changedDeadLineDate = LocalDateTime.parse(deadLineDate, formatter);
+        LocalDateTime changedDeadLineDate = LocalDateTime.parse(deadLineDate+" 00:00:00", formatter);
         return changedDeadLineDate;
     }
 }
