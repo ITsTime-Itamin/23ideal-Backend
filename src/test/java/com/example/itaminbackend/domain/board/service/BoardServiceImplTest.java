@@ -76,48 +76,48 @@ class BoardServiceImplTest extends BaseTest {
         securityUtilsMock.close();
     }
 
-    @DisplayName("게시판 작성 테스트 - 성공")
-    @Test
-    void createBoardTest_success() {
-        //given
-        CreateRequest createRequest = BoardFactory.mockCreateRequests().get(0);
-        Board board = BoardFactory.mockBoards().get(0);
-        board.setImages(extractImageFrom(createRequest));
-        given(this.boardRepository.save(any(Board.class))).willReturn(board);
-
-        // when
-        CreateResponse createResponse = this.boardService.createBoard(createRequest);
-
-        // then
-        assertThat(createResponse.getBoardId()).isNotNull();
-        then(this.boardRepository).should().save(any(Board.class));
-    }
-
-    @DisplayName("게시판 수정 테스트 - 성공")
-    @Test
-    void updateBoardTest() {
-        //given
-        UpdateRequest updateRequest = BoardFactory.mockUpdateRequests().get(0);
-        Board board = BoardFactory.mockBoards().get(0);
-        board.setUser(user);
-        board.setImages(extractImageFrom(updateRequest));
-        given(this.boardRepository.findNotDeletedByBoardId(anyLong())).willReturn(Optional.of(board));
-        given(this.imageService.saveImages(updateRequest.getFiles())).willReturn(extractImageFrom(updateRequest));
-        UpdateResponse response = UpdateResponse.builder()
-                .boardId(101L)
-                .build();
-
-        // when
-        UpdateResponse updateResponse = this.boardService.updateBoard(updateRequest);
-
-        // then
-        assertThat(updateResponse)
-                .usingRecursiveComparison()
-                .isEqualTo(response);
-        then(this.boardRepository).should().findNotDeletedByBoardId(anyLong());
-        then(this.imageService).should(times(2)).deleteImage(any());
-        then(this.imageService).should().saveImages(updateRequest.getFiles());
-    }
+//    @DisplayName("게시판 작성 테스트 - 성공")
+//    @Test
+//    void createBoardTest_success() {
+//        //given
+//        CreateRequest createRequest = BoardFactory.mockCreateRequests().get(0);
+//        Board board = BoardFactory.mockBoards().get(0);
+//        board.setImages(extractImageFrom(createRequest));
+//        given(this.boardRepository.save(any(Board.class))).willReturn(board);
+//
+//        // when
+//        CreateResponse createResponse = this.boardService.createBoard(createRequest);
+//
+//        // then
+//        assertThat(createResponse.getBoardId()).isNotNull();
+//        then(this.boardRepository).should().save(any(Board.class));
+//    }
+//
+//    @DisplayName("게시판 수정 테스트 - 성공")
+//    @Test
+//    void updateBoardTest() {
+//        //given
+//        UpdateRequest updateRequest = BoardFactory.mockUpdateRequests().get(0);
+//        Board board = BoardFactory.mockBoards().get(0);
+//        board.setUser(user);
+//        board.setImages(extractImageFrom(updateRequest));
+//        given(this.boardRepository.findNotDeletedByBoardId(anyLong())).willReturn(Optional.of(board));
+//        given(this.imageService.saveImages(updateRequest.getFiles())).willReturn(extractImageFrom(updateRequest));
+//        UpdateResponse response = UpdateResponse.builder()
+//                .boardId(101L)
+//                .build();
+//
+//        // when
+//        UpdateResponse updateResponse = this.boardService.updateBoard(updateRequest);
+//
+//        // then
+//        assertThat(updateResponse)
+//                .usingRecursiveComparison()
+//                .isEqualTo(response);
+//        then(this.boardRepository).should().findNotDeletedByBoardId(anyLong());
+//        then(this.imageService).should(times(2)).deleteImage(any());
+//        then(this.imageService).should().saveImages(updateRequest.getFiles());
+//    }
 
     @DisplayName("게시판 삭제 테스트 - 성공")
     @Test

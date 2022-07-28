@@ -30,55 +30,55 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class BoardControllerTest extends BaseWebMvcTest {
 
-    @DisplayName("게시판 작성 테스트 - 성공")
-    @Test
-    @WithMockUser
-    void createBoardTest_success() throws Exception {
-        //given
-        CreateResponse createResponse = BoardFactory.mockCreateResponses().get(0);
-        given(boardService.createBoard(any(CreateRequest.class)))
-                .willReturn(createResponse);
-        //when
-        ResultActions perform = mockMvc.perform(multipart("/api/v1/boards")
-                .file(FileFactory.getTestImage1())
-                .param("title", "boardTitle")
-                .param("content", "boardContent")
-                .param("boardType", "NOTICE")
-                .param("deadLineDate", "2016-10-15 00:00:00"));
-
-        //then
-        perform.andExpect(status().isCreated())
-                .andExpect(jsonPath("$.message").value(containsString(CREATE_BOARD_SUCCESS.getMessage())))
-                .andExpect(jsonPath("$.data.boardId").value(is(1)))
-                .andDo(print());
-        then(this.boardService).should().createBoard(any(CreateRequest.class));
-    }
-
-    @DisplayName("게시판 수정 테스트 - 성공")
-    @Test
-    @WithMockUser
-    void updateBoardTest_success() throws Exception {
-        //given
-        UpdateResponse updateResponse = BoardFactory.mockUpdateResponses().get(0);
-        given(this.boardService.updateBoard(any(UpdateRequest.class)))
-                .willReturn(updateResponse);
-
-        //when
-        ResultActions perform = mockMvc.perform(multipart("/api/v1/boards/update")
-                .file(FileFactory.getTestImage1())
-                .param("boardId", "1")
-                .param("title", "boardTitle")
-                .param("content", "boardContent")
-                .param("boardType", "NOTICE")
-                .param("deadLineDate", "2016-10-15 00:00:00"));
-
-        //then
-        perform.andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value(containsString(UPDATE_BOARD_SUCCESS.getMessage())))
-                .andExpect(jsonPath("$.data.boardId").value(is(1)))
-                .andDo(print());
-        then(this.boardService).should().updateBoard(any(UpdateRequest.class));
-    }
+//    @DisplayName("게시판 작성 테스트 - 성공")
+//    @Test
+//    @WithMockUser
+//    void createBoardTest_success() throws Exception {
+//        //given
+//        CreateResponse createResponse = BoardFactory.mockCreateResponses().get(0);
+//        given(boardService.createBoard(any(CreateRequest.class)))
+//                .willReturn(createResponse);
+//        //when
+//        ResultActions perform = mockMvc.perform(multipart("/api/v1/boards")
+//                .file(FileFactory.getTestImage1())
+//                .param("title", "boardTitle")
+//                .param("content", "boardContent")
+//                .param("boardType", "NOTICE")
+//                .param("deadLineDate", "2016-10-15 00:00:00"));
+//
+//        //then
+//        perform.andExpect(status().isCreated())
+//                .andExpect(jsonPath("$.message").value(containsString(CREATE_BOARD_SUCCESS.getMessage())))
+//                .andExpect(jsonPath("$.data.boardId").value(is(1)))
+//                .andDo(print());
+//        then(this.boardService).should().createBoard(any(CreateRequest.class));
+//    }
+//
+//    @DisplayName("게시판 수정 테스트 - 성공")
+//    @Test
+//    @WithMockUser
+//    void updateBoardTest_success() throws Exception {
+//        //given
+//        UpdateResponse updateResponse = BoardFactory.mockUpdateResponses().get(0);
+//        given(this.boardService.updateBoard(any(UpdateRequest.class)))
+//                .willReturn(updateResponse);
+//
+//        //when
+//        ResultActions perform = mockMvc.perform(multipart("/api/v1/boards/update")
+//                .file(FileFactory.getTestImage1())
+//                .param("boardId", "1")
+//                .param("title", "boardTitle")
+//                .param("content", "boardContent")
+//                .param("boardType", "NOTICE")
+//                .param("deadLineDate", "2016-10-15 00:00:00"));
+//
+//        //then
+//        perform.andExpect(status().isOk())
+//                .andExpect(jsonPath("$.message").value(containsString(UPDATE_BOARD_SUCCESS.getMessage())))
+//                .andExpect(jsonPath("$.data.boardId").value(is(1)))
+//                .andDo(print());
+//        then(this.boardService).should().updateBoard(any(UpdateRequest.class));
+//    }
 
     @DisplayName("게시판 조회 테스트 - 성공")
     @Test
