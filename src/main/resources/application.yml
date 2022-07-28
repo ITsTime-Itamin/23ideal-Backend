@@ -15,21 +15,18 @@ spring:
     username: ENC(fpnzm6OeJF3hBCULOgeh0w==)
     password: ENC(fpnzm6OeJF3hBCULOgeh0w==)
     driver-class-name: com.mysql.cj.jdbc.Driver
-    initialize: true
-    initialization-mode: always
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
         format_sql: true
     database-platform: org.hibernate.dialect.MySQL5Dialect
-    defer-datasource-initialization: true
   data:
     web:
       pageable:
@@ -122,21 +119,18 @@ spring:
     username: ENC(fpnzm6OeJF3hBCULOgeh0w==)
     password: ENC(fpnzm6OeJF3hBCULOgeh0w==)
     driver-class-name: com.mysql.cj.jdbc.Driver
-    initialize: true
-    initialization-mode: always
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
         format_sql: true
     database-platform: org.hibernate.dialect.MySQL5Dialect
-    defer-datasource-initialization: true
   data:
     web:
       pageable:
